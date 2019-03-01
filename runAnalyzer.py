@@ -137,7 +137,7 @@ def send_request_to_msarhan(root, inflection):
 
 
 def send_request_to_elasticsearch(root, inflection, analyzer='ar_std_lem'):
-    options = optParser(['-p', '9220', '-s', 'localhost', '-i', 'arci', '-a', analyzer])
+    options = optParser(['-p', '9200', '-s', 'localhost', '-i', 'arci', '-a', analyzer])
     request = build_request(options, text=inflection)
     response = send_request(request)
     return response
@@ -165,10 +165,10 @@ def process_inflection_in_a_csv_file(csv_file, analyzer='msarhan'):
             for row in csv_reader:
                 if analyzer == 'msarhan':
                     response = send_request_to_msarhan(row['﻿Original'], row['Inflection'])
-                    handle_msarhan_response(response, row['﻿Original'], row['Inflection'], report_writer)
+                    handle_msarhan_response(response, row['Original'], row['Inflection'], report_writer)
                 else:
-                    response = send_request_to_elasticsearch(row['﻿Original'], row['Inflection'], analyzer)
-                    handle_elasticsearch_response(analyzer, response, row['﻿Original'], row['Inflection'], report_writer)
+                    response = send_request_to_elasticsearch(row['Original'], row['Inflection'], analyzer)
+                    handle_elasticsearch_response(analyzer, response, row['Original'], row['Inflection'], report_writer)
 
             print('Count: {0} Succ: {1}'.format(count, succ))
 

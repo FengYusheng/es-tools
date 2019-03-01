@@ -105,14 +105,46 @@ def derivation_for_inaccuracy():
     generate_accuracy_csv('./report_repo/derivation2.csv', records)
 
 
+def verbs_imperative():
+    process_inflection_in_a_csv_file('./data/verbs_imperative_form.csv', analyzer='ar_std_lem')
+    process_inflection_in_a_csv_file('./data/verbs_imperative_form.csv', analyzer='rbl_ara')
+    records = collect_analyzer_results('./data/verbs_imperative_form_ar_std_lem_report.csv', 'ar_std_lem')
+    records = add_new_analyzer_results(records, './data/verbs_imperative_form_rbl_ara_report.csv', 'rbl_ara')
+    save_report('./report_repo/verbs_imperative_form.json', records)
+    generate_accuracy_csv('./report_repo/verbs_imperative_form.csv', records)
 
-def run():
+
+def verbs_past_tense():
+    process_inflection_in_a_csv_file('./data/verbs_past_tense.csv', analyzer='ar_std_lem')
+    process_inflection_in_a_csv_file('./data/verbs_past_tense.csv', analyzer='rbl_ara')
+    records = collect_analyzer_results('./data/verbs_past_tense_ar_std_lem_report.csv', 'ar_std_lem')
+    records = add_new_analyzer_results(records, './data/verbs_past_tense_rbl_ara_report.csv', 'rbl_ara')
+    save_report('./report_repo/verbs_past_tense.json', records)
+    generate_accuracy_csv('./report_repo/verbs_past_tense.csv', records)
+
+
+def verbs_present_tense():
+    process_inflection_in_a_csv_file('./data/verbs_present_tense.csv', analyzer='ar_std_lem')
+    process_inflection_in_a_csv_file('./data/verbs_present_tense.csv', analyzer='rbl_ara')
+    records = collect_analyzer_results('./data/verbs_present_tense_ar_std_lem_report.csv', 'ar_std_lem')
+    records = add_new_analyzer_results(records, './data/verbs_present_tense_rbl_ara_report.csv', 'rbl_ara')
+    save_report('./report_repo/verbs_present_tense.json', records)
+    generate_accuracy_csv('./report_repo/verbs_present_tense.csv', records)
+
+
+def run_old():
     regular_verbs()
     irregular_verbs()
     nouns()
     numerals()
     derivation()
     derivation_for_inaccuracy()
+
+
+def run():
+    verbs_imperative()
+    verbs_past_tense()
+    verbs_present_tense()
 
 
 
