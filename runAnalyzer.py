@@ -2,7 +2,7 @@
 import argparse
 import sys
 
-def optParser():
+def optParser(*args):
     kwargs = {
         "prog" : "runAnalyzer",
         "description" : '''Call ES Analyzer API''',
@@ -17,7 +17,7 @@ def optParser():
     parser.add_argument('-p', '--port', action='store', type=str, required=False, default='9220', help='the port number which your elasticsearch is listening on', dest='port', metavar='Port')
     parser.add_argument('-i', '--index', action='store', type=str, required=False, default=None, help='the index which you want handle', dest='index', metavar='Index')
 
-    options = parser.parse_args()
+    options = parser.parse_args(args=args)
     return vars(options)
 
 
