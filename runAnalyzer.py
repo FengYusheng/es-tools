@@ -5,7 +5,7 @@ import json
 import time
 import sys
 
-def optParser(*args):
+def optParser(args=[]):
     kwargs = {
         "prog" : "runAnalyzer",
         "description" : '''Call ES Analyzer API''',
@@ -26,7 +26,12 @@ def optParser(*args):
 
 
 def build_request(options, method='GET'):
+    if options['analyzer']:
+        method = 'POST'
+
     request = 'curl -s -X{0} http://{1}:{2}'.format(method, options['server'], options['port'])
+    request += '/_analyze?pretty'
+
     return request
 
 
@@ -42,6 +47,7 @@ __all__ = [
 
 
 if __name__ == '__main__':
-    options = optParser()
+    options = optParser(sys.argv[1:])
     request = build_request(options)
-    send_request(request)
+    print(request)
+    # send_request(request)
