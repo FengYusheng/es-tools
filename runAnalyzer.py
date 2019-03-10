@@ -25,12 +25,14 @@ def optParser(args=[]):
     return vars(options)
 
 
-def build_request(options, method='GET'):
-    if options['analyzer']:
-        method = 'POST'
-
-    request = 'curl -s -X{0} http://{1}:{2}'.format(method, options['server'], options['port'])
+def build_request(options, method='POST'):
+    request = 'curl -s -H "Content-type: application/json" -X{0} http://{1}:{2}/{3}'.format(method, options['server'], options['port'], options['index'])
     request += '/_analyze?pretty'
+    request += ' -d \'{"analyzer":'
+    request += '"' + options['analyzer'] + '",'
+    request += '"text":'
+    request += '"' + 'returning' + '"'
+    request += '}\''
 
     return request
 
@@ -49,5 +51,5 @@ __all__ = [
 if __name__ == '__main__':
     options = optParser(sys.argv[1:])
     request = build_request(options)
-    print(request)
-    # send_request(request)
+    response = send_request(request)
+    print(response)
