@@ -39,6 +39,14 @@ class TestCommandLines(unittest.TestCase):
         self.assertEqual(options['index'], 'arci')
 
 
+    def test_analyzer_option(self):
+        options = optParser(*['-a', 'ar_std'])
+        self.assertEqual(options['analyzer'], 'ar_std')
+
+        options = optParser(*['--analyzer', 'ar_std'])
+        self.assertEqual(options['analyzer'], 'ar_std')
+
+
 
 if __name__ == '__main__':
     unittest.main()
