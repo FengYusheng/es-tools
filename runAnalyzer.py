@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import argparse
+import subprocess
+import json
 import sys
 
 def optParser(*args):
@@ -21,8 +23,15 @@ def optParser(*args):
     return vars(options)
 
 
-def handle_options(options):
-    print(type(options))
+def build_request(options, method='GET'):
+    request = 'curl -s -X{0} http://{1}:{2}'.format(method, options['server'], options['port'])
+    return request
+
+
+def send_request(request):
+    completed_process = subprocess.run(request, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, check=True, universal_newlines=True)
+    response = completed_process.stdout if completed_process.stderr == '' else completed_process.stderr
+    return json.loads(response, encoding='utf-8')
 
 
 __all__ = [
@@ -32,4 +41,5 @@ __all__ = [
 
 if __name__ == '__main__':
     options = optParser()
-    handle_options(options)
+    request = build_request(options)
+    send_request(request)
