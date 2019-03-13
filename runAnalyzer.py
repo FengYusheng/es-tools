@@ -25,13 +25,13 @@ def optParser(args=[]):
     return vars(options)
 
 
-def build_request(options, method='POST'):
+def build_request(options, method='POST', text='returnning'):
     request = 'curl -s -H "Content-type: application/json" -X{0} http://{1}:{2}/{3}'.format(method, options['server'], options['port'], options['index'])
     request += '/_analyze?pretty'
     request += ' -d \'{"analyzer":'
     request += '"' + options['analyzer'] + '",'
     request += '"text":'
-    request += '"' + 'returning' + '"'
+    request += '"' + text + '"'
     request += '}\''
 
     return request
@@ -49,7 +49,7 @@ __all__ = [
 
 
 if __name__ == '__main__':
-    options = optParser(sys.argv[1:])
+    options = optParser(['-p', '9220', '-s', 'localhost', '-i', 'arci-test', '-a', 'ar_std_lem'])
     request = build_request(options)
     response = send_request(request)
     print(response)
