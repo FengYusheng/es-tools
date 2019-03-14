@@ -4,6 +4,8 @@ import subprocess
 import json
 import time
 import sys
+import os
+
 
 def optParser(args=[]):
     kwargs = {
@@ -43,13 +45,45 @@ def send_request(request):
     return json.loads(response, encoding='utf-8')
 
 
+def read_text(data_file):
+    data_file = os.path.realpath(os.path.abspath(os.path.expandvars(os.path.expanduser(data_file))))
+    if not os.access(data_file, os.F_OK|os.R_OK):
+        raise OSError("The file {0} doesn't exist or you have no read permission.".format(data_file))
+
+    # TODO: JSON iterator
+    with open(data_file, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+        texts = data['words']
+
+    return texts
+
+
+def handle_response(response):
+    if 'tokens' in response:
+        return [t['token'] for t in response['tokens']]
+    else:
+        raise(TypeError('Error response'))
+
+
+
 __all__ = [
-    'optParser'
+    'optParser',
+    'read_text',
+    'build_request',
+    'send_request',
+    'handle_response'
 ]
 
 
 if __name__ == '__main__':
     options = optParser(['-p', '9220', '-s', 'localhost', '-i', 'arci-test', '-a', 'ar_std_lem'])
-    request = build_request(options)
-    response = send_request(request)
-    print(response)
+    data = read_text('./data/words_with_hamza.json')
+    for t in data:
+        request = build_request(options, text=t['text'])
+        response = send_request(request)
+        results = handle_response(response)
+        t['result'] = results
+        t['inflect'] = len(results) == 1 and t['text'] not in results
+
+    with open('./data/words_with_hamza_analyzer.json', 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=4, ensure_ascii=False)

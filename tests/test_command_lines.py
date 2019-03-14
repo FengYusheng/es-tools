@@ -47,9 +47,9 @@ class TestCommandLines(unittest.TestCase):
         self.assertEqual(options['analyzer'], 'ar_std')
 
 
-    def test_build_query(self):
-        options = optParser(['-p', '9220', '-s', 'localhost', '-i', 'arci-test', '-a', 'ar_std_lem'])
-        print(options)
+    # def test_build_query(self):
+    #     options = optParser(['-p', '9220', '-s', 'localhost', '-i', 'arci-test', '-a', 'ar_std_lem'])
+    #     print(options)
 
 
 
