@@ -1,0 +1,37 @@
+{
+    "title" : "words with punctuation",
+    "analyzer" : "ar_std_lem",
+    "explain" : "These words are associated with different punctuation. They have the same spelling, but different pronounciation and meanings.",
+    "words" : [
+        {
+            "text" : "كَتَبَ"
+        },
+        {
+            "text" : "كَتَبَ"
+        },
+        {
+            "text" : "ذَهَبَ"
+        },
+        {
+            "text" : "ذَهَبٌ"
+        },
+        {
+            "text" : "مِن"
+        },
+        {
+            "text" : "مَنْ"
+        },
+        {
+            "text" : "رُبَّ"
+        },
+        {
+            "text" : "رُب"
+        },
+        {
+            "text" : "عَلَم"
+        },
+        {
+            "text" : "عِلم"
+        }
+    ]
+}

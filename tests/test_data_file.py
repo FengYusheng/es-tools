@@ -48,6 +48,14 @@ class TestDataFile(unittest.TestCase):
         test_words('./data/words_without_hamza.json', './data/words_without_hamza_analyzer.json')
 
 
+    def test_words_with_punctuation(self):
+        test_words('./data/words_with_punctuation.json', './data/words_with_punctuation_analyzer.json')
+
+
+    def test_verbs(self):
+        test_words('./data/verbs.json', './data/verbs_analyzer.json')
+
+
 
 if __name__ == '__main__':
     unittest.main()
