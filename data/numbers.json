@@ -1,0 +1,22 @@
+{
+    "title" : "Numbers",
+    "analyzer" : "ar_std_lem",
+    "explain" : "Numbers in Arabic",
+    "words" : [
+        {
+            "text" : "أثنتان"
+        },
+        {
+            "text" : "أثنين"
+        },
+        {
+            "text" : "اثنين"
+        },
+        {
+            "text" : "اثنتان"
+        },
+        {
+            "text" : "اثنين"
+        }
+    ]
+}

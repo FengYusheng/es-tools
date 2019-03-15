@@ -8,7 +8,8 @@ from runAnalyzer import *
 def test_words(input, output):
     options = optParser(['-p', '9220', '-s', 'localhost', '-i', 'arci-test', '-a', 'ar_std_lem'])
     data = read_text(input)
-    for t in data:
+    words = data['words']
+    for t in words:
         request = build_request(options, text=t['text'])
         response = send_request(request)
         results = handle_response(response)
@@ -33,7 +34,8 @@ class TestDataFile(unittest.TestCase):
     def test_words_with_hamza(self):
         options = optParser(['-p', '9220', '-s', 'localhost', '-i', 'arci-test', '-a', 'ar_std_lem'])
         data = read_text('./data/words_with_hamza.json')
-        for t in data:
+        words = data['words']
+        for t in words:
             request = build_request(options, text=t['text'])
             response = send_request(request)
             results = handle_response(response)
@@ -54,6 +56,18 @@ class TestDataFile(unittest.TestCase):
 
     def test_verbs(self):
         test_words('./data/verbs.json', './data/verbs_analyzer.json')
+
+
+    def test_adjectives(self):
+        test_words('./data/adjectives.json', './data/adjectives_analyzer.json')
+
+
+    def test_nouns(self):
+        test_words('./data/nouns.json', './data/nouns_analyzer.json')
+
+
+    def test_numbers(self):
+        test_words('./data/numbers.json', './data/numbers_analyzer.json')
 
 
 

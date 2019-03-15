@@ -55,7 +55,7 @@ def read_text(data_file):
         data = json.load(f)
         texts = data['words']
 
-    return texts
+    return data
 
 
 def handle_response(response):
