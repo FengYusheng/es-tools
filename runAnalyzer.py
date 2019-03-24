@@ -3,6 +3,7 @@ import argparse
 import subprocess
 import json
 import time
+import csv
 import sys
 import os
 
@@ -58,6 +59,10 @@ def read_text(data_file):
     return data
 
 
+def read_text_from_csv(csv_file):
+    pass
+
+
 def handle_response(response):
     if 'tokens' in response:
         return [t['token'] for t in response['tokens']]
@@ -71,7 +76,8 @@ __all__ = [
     'read_text',
     'build_request',
     'send_request',
-    'handle_response'
+    'handle_response',
+    'read_text_from_csv'
 ]
 
 
