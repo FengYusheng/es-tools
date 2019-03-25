@@ -107,6 +107,8 @@ def send_request_to_msarhan(root, inflection):
 
 def send_request_to_elasticsearch(root, inflection):
     options = optParser(['-p', '9220', '-s', 'localhost', '-i', 'arci-test', '-a', 'ar_std_lem'])
+    # Just folding
+    # options = optParser(['-p', '9220', '-s', 'localhost', '-i', 'arci-test', '-a', 'ar_std'])
     request = build_request(options, text=inflection)
     response = send_request(request)
     return response

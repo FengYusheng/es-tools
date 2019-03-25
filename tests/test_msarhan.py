@@ -24,5 +24,24 @@ class TestMsarhan(unittest.TestCase):
         process_inflection_in_a_csv_file('./data/hamza.csv', analyzer='msarhan')
 
 
+    @unittest.skip("Skip nouns for now")
+    def test_nouns_with_msarhan(self):
+        process_inflection_in_a_csv_file('./data/nouns.csv', analyzer='msarhan')
+
+
+    @unittest.skip("Skip punctuation for now")
+    def test_punctuation_with_msarhan(self):
+        process_inflection_in_a_csv_file('./data/punctuation.csv', analyzer='msarhan')
+
+
+    @unittest.skip("Skip numerals for now")
+    def test_numerals_with_msarhan(self):
+        process_inflection_in_a_csv_file('./data/numerals.csv', analyzer='msarhan')
+
+
+    def test_derivation_with_msarhan(self):
+        process_inflection_in_a_csv_file('./data/derivation.csv', analyzer='msarhan')
+
+
 if __name__ == '__main__':
     unittest.main()
