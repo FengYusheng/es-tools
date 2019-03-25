@@ -20,6 +20,12 @@ def handle_msarhan_response(response, original, inflection, report_writer=None):
     succ = succ + 1 if original==result else succ
 
 
+def handle_elasticsearch_response(response, original, inflection, report_writer=None):
+    global count, succ
+    response = handle_response(response)
+    print(response)
+
+
 def optParser(args=[]):
     kwargs = {
         "prog" : "runAnalyzer",
@@ -58,15 +64,14 @@ def send_request(request):
     return json.loads(response, encoding='utf-8')
 
 
-def read_text(data_file):
-    data_file = os.path.realpath(os.path.abspath(os.path.expandvars(os.path.expanduser(data_file))))
-    if not os.access(data_file, os.F_OK|os.R_OK):
-        raise OSError("The file {0} doesn't exist or you have no read permission.".format(data_file))
+def read_text(csv_file):
+    csv_file = os.path.realpath(os.path.abspath(os.path.expandvars(os.path.expanduser(csv_file))))
+    if not os.access(csv_file, os.F_OK|os.R_OK):
+        raise OSError("The file {0} doesn't exist or you have no read permission.".format(csv_file))
 
-    # TODO: JSON iterator
-    with open(data_file, 'r', encoding='utf-8') as f:
-        data = json.load(f)
-        texts = data['words']
+    # TODO: Read data from a csv
+    with open(csv_file, 'r') as f:
+        pass
 
     return data
 
@@ -86,6 +91,21 @@ def send_request_to_msarhan(root, inflection):
     return response
 
 
+def handle_response(response):
+    if 'tokens' in response:
+        return [t['token'] for t in response['tokens']]
+    else:
+        raise(TypeError('Error response'))
+
+
+def send_request_to_elasticsearch(root, inflection):
+    options = optParser(['-p', '9220', '-s', 'localhost', '-i', 'arci-test', '-a', 'ar_std_lem'])
+    request = build_request(options, text=inflection)
+    response = send_request(request)
+    return response
+
+
+
 
 def process_inflection_in_a_csv_file(csv_file, analyzer='msarhan'):
     global count, succ
@@ -97,20 +117,17 @@ def process_inflection_in_a_csv_file(csv_file, analyzer='msarhan'):
     with open(csv_report, 'w') as report:
         report_writer = csv.DictWriter(report, fieldnames=['Original', 'Inflection', 'msarhan', 'is_same'])
         report_writer.writeheader()
-        with open(csv_file, 'r', encoding=None) as csv_file:
+        with open(csv_file, 'r') as csv_file:
             csv_reader = csv.DictReader(csv_file)
             for row in csv_reader:
-                 response = send_request_to_msarhan(row['﻿Original'], row['Inflection'])
-                 handle_msarhan_response(response, row['﻿Original'], row['Inflection'], report_writer)
+                if analyzer == 'msarhan':
+                     response = send_request_to_msarhan(row['﻿Original'], row['Inflection'])
+                     handle_msarhan_response(response, row['﻿Original'], row['Inflection'], report_writer)
+                elif analyzer == 'elasticsearch':
+                    response = send_request_to_elasticsearch(row['﻿Original'], row['Inflection'])
+                    handle_elasticsearch_response(response, row['﻿Original'], row['Inflection'], report_writer)
 
             print('Count: {0} Succ: {1}'.format(count, succ))
-
-
-def handle_response(response):
-    if 'tokens' in response:
-        return [t['token'] for t in response['tokens']]
-    else:
-        raise(TypeError('Error response'))
 
 
 

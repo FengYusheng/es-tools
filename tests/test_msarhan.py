@@ -10,8 +10,8 @@ class TestMsarhan(unittest.TestCase):
             process_inflection_in_a_csv_file('./data/nonexistent.csv')
 
 
-    def test_access_an_existent_csv_file(self):
-        process_inflection_in_a_csv_file('./data/irregular_verbs.csv')
+    def test_verbs_with_msarhan(self):
+        process_inflection_in_a_csv_file('./data/irregular_verbs.csv', analyzer='msarhan')
 
 
 if __name__ == '__main__':
