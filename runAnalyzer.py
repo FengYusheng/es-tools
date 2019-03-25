@@ -128,8 +128,8 @@ def process_inflection_in_a_csv_file(csv_file, analyzer='msarhan'):
             csv_reader = csv.DictReader(csv_file)
             for row in csv_reader:
                 if analyzer == 'msarhan':
-                     response = send_request_to_msarhan(row['﻿Original'], row['Inflection'])
-                     handle_msarhan_response(response, row['﻿Original'], row['Inflection'], report_writer)
+                    response = send_request_to_msarhan(row['﻿Original'], row['Inflection'])
+                    handle_msarhan_response(response, row['﻿Original'], row['Inflection'], report_writer)
                 elif analyzer == 'elasticsearch':
                     response = send_request_to_elasticsearch(row['﻿Original'], row['Inflection'])
                     handle_elasticsearch_response(response, row['﻿Original'], row['Inflection'], report_writer)
