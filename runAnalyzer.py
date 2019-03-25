@@ -7,6 +7,18 @@ import csv
 import sys
 import os
 
+diff = count = succ = 0
+
+def handle_msarhan_response(response, original, inflection, report_writer=None):
+    global count, succ
+    response = response.split('\n')
+    original, root, result = original.strip(), response[0].strip(), response[1].strip()
+    print({'Original':original, 'Inflection':inflection, 'msarhan':result, 'is_same':original==result})
+    report_writer and report_writer.writerow({'Original':original, 'Inflection':inflection, 'msarhan':result, 'is_same':original==result})
+
+    count += 1
+    succ = succ + 1 if original==result else succ
+
 
 def optParser(args=[]):
     kwargs = {
@@ -59,8 +71,39 @@ def read_text(data_file):
     return data
 
 
-def read_text_from_csv(csv_file):
-    pass
+
+def send_request_to_msarhan(root, inflection):
+    completed_process = subprocess.run(
+        ' java -cp ./jars/*:arabic-analyzer.jar arabic.analyzer.Library {0} {1}'\
+        .format(root, inflection),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        shell=True,
+        check=True,
+        universal_newlines=True
+    )
+    response = completed_process.stdout if completed_process.stderr == '' else completed_process.stderr
+    return response
+
+
+
+def process_inflection_in_a_csv_file(csv_file, analyzer='msarhan'):
+    global count, succ
+    csv_file = os.path.realpath(os.path.abspath(os.path.expandvars(os.path.expanduser(csv_file))))
+    if not os.access(csv_file, os.F_OK|os.R_OK):
+        raise  OSError("The file {0} doesn't exist or you have no read permission.".format(csv_file))
+
+    csv_report = csv_file.rpartition('.')[0] + '_{0}_report'.format(analyzer) + '.csv'
+    with open(csv_report, 'w') as report:
+        report_writer = csv.DictWriter(report, fieldnames=['Original', 'Inflection', 'msarhan', 'is_same'])
+        report_writer.writeheader()
+        with open(csv_file, 'r', encoding=None) as csv_file:
+            csv_reader = csv.DictReader(csv_file)
+            for row in csv_reader:
+                 response = send_request_to_msarhan(row['﻿Original'], row['Inflection'])
+                 handle_msarhan_response(response, row['﻿Original'], row['Inflection'], report_writer)
+
+            print('Count: {0} Succ: {1}'.format(count, succ))
 
 
 def handle_response(response):
@@ -77,7 +120,9 @@ __all__ = [
     'build_request',
     'send_request',
     'handle_response',
-    'read_text_from_csv'
+    'process_inflection_in_a_csv_file',
+    'send_request_to_msarhan',
+    'handle_msarhan_response'
 ]
 
 
