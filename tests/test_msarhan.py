@@ -9,11 +9,17 @@ class TestMsarhan(unittest.TestCase):
         with self.assertRaises(OSError):
             process_inflection_in_a_csv_file('./data/nonexistent.csv')
 
-    @unittest.skip("Skip verbs for now")
-    def test_verbs_with_msarhan(self):
+    @unittest.skip("Skip irregular verbs for now")
+    def test_irregular_verbs_with_msarhan(self):
         process_inflection_in_a_csv_file('./data/irregular_verbs.csv', analyzer='msarhan')
 
 
+    @unittest.skip("Skip regular verbs for now")
+    def test_regular_verbs_with_msarhan(self):
+        process_inflection_in_a_csv_file('./data/regular_verbs.csv', analyzer='msarhan')
+
+
+    @unittest.skip("Skip hamza for now")
     def test_hamza_with_msarhan(self):
         process_inflection_in_a_csv_file('./data/hamza.csv', analyzer='msarhan')
 
