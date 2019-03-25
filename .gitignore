@@ -2,4 +2,4 @@ __pycache__/
 runAnalyzer.pyc
 *analyzer.json
 samples/
-data/
+data

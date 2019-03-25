@@ -20,10 +20,23 @@ def handle_msarhan_response(response, original, inflection, report_writer=None):
     succ = succ + 1 if original==result else succ
 
 
+def handle_response(response):
+    if 'tokens' in response:
+        return [t['token'] for t in response['tokens']]
+    else:
+        raise(TypeError('Error response'))
+
+
 def handle_elasticsearch_response(response, original, inflection, report_writer=None):
     global count, succ
     response = handle_response(response)
-    print(response)
+    original = original.strip()
+    results = [i.strip() for i in response]
+    print({'Original': original, 'Inflection' : inflection, 'elasticsearch' : response, 'is_same' : original in results})
+    report_writer and report_writer.writerow({'Original':original, 'Inflection':inflection, 'elasticsearch':results, 'is_same':original in results})
+
+    count += 1
+    succ = succ + 1 if original in results else succ
 
 
 def optParser(args=[]):
@@ -91,12 +104,6 @@ def send_request_to_msarhan(root, inflection):
     return response
 
 
-def handle_response(response):
-    if 'tokens' in response:
-        return [t['token'] for t in response['tokens']]
-    else:
-        raise(TypeError('Error response'))
-
 
 def send_request_to_elasticsearch(root, inflection):
     options = optParser(['-p', '9220', '-s', 'localhost', '-i', 'arci-test', '-a', 'ar_std_lem'])
@@ -115,7 +122,7 @@ def process_inflection_in_a_csv_file(csv_file, analyzer='msarhan'):
 
     csv_report = csv_file.rpartition('.')[0] + '_{0}_report'.format(analyzer) + '.csv'
     with open(csv_report, 'w') as report:
-        report_writer = csv.DictWriter(report, fieldnames=['Original', 'Inflection', 'msarhan', 'is_same'])
+        report_writer = csv.DictWriter(report, fieldnames=['Original', 'Inflection', analyzer, 'is_same'])
         report_writer.writeheader()
         with open(csv_file, 'r') as csv_file:
             csv_reader = csv.DictReader(csv_file)
