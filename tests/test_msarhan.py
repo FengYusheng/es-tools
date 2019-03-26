@@ -38,7 +38,7 @@ class TestMsarhan(unittest.TestCase):
     def test_numerals_with_msarhan(self):
         process_inflection_in_a_csv_file('./data/numerals.csv', analyzer='msarhan')
 
-
+    @unittest.skip("Skip derivation for now")
     def test_derivation_with_msarhan(self):
         process_inflection_in_a_csv_file('./data/derivation.csv', analyzer='msarhan')
 

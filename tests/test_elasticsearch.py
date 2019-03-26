@@ -33,7 +33,7 @@ class TestElastisearch(unittest.TestCase):
     def test_numerals_with_elasticsearch(self):
         process_inflection_in_a_csv_file('./data/numerals.csv', analyzer='elasticsearch')
 
-
+    @unittest.skip("Skip derivatiion for now.")
     def test_derivation_with_elasticsearch(self):
         process_inflection_in_a_csv_file('./data/derivation.csv', analyzer='elasticsearch')
 

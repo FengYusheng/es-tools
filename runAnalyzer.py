@@ -33,7 +33,7 @@ def handle_elasticsearch_response(response, original, inflection, report_writer=
     original = original.strip()
     results = [i.strip() for i in response]
     print({'Original': original, 'Inflection' : inflection, 'elasticsearch' : response, 'is_same' : original in results})
-    report_writer and report_writer.writerow({'Original':original, 'Inflection':inflection, 'elasticsearch':results, 'is_same':original in results})
+    report_writer and report_writer.writerow({'Original':original, 'Inflection':inflection, 'elasticsearch':' '.join(results), 'is_same':original in results})
 
     count += 1
     succ = succ + 1 if original in results else succ
