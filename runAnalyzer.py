@@ -39,6 +39,13 @@ def handle_elasticsearch_response(response, original, inflection, report_writer=
     succ = succ + 1 if original in results else succ
 
 
+def handle_rosette_response(response, original, inflection, report_writer=None):
+    global count, succ
+    print('result' in response and 'lemmas' in response['result'])
+    if not ('result' in response and 'lemmas' in response['result']):
+        print('hhhh')
+
+
 def optParser(args=[]):
     kwargs = {
         "prog" : "runAnalyzer",
@@ -129,6 +136,8 @@ def send_request_to_elasticsearch(root, inflection):
 
 def send_request_to_rosette(root, inflection):
     request = build_rosette_request(inflection)
+    response = send_request(request)
+    return response
 
 
 def process_inflection_in_a_csv_file(csv_file, analyzer='msarhan'):
@@ -151,7 +160,9 @@ def process_inflection_in_a_csv_file(csv_file, analyzer='msarhan'):
                     response = send_request_to_elasticsearch(row['﻿Original'], row['Inflection'])
                     handle_elasticsearch_response(response, row['﻿Original'], row['Inflection'], report_writer)
                 elif analyzer == 'rosette':
-                    send_request_to_rosette(row['﻿Original'], row['Inflection'])
+                    response = send_request_to_rosette(row['﻿Original'], row['Inflection'])
+                    handle_rosette_response(response, row['﻿Original'], row['Inflection'], report_writer)
+                    break
 
             print('Count: {0} Succ: {1}'.format(count, succ))
 
@@ -168,17 +179,3 @@ __all__ = [
     'handle_msarhan_response',
     'send_request_to_rosette'
 ]
-
-
-if __name__ == '__main__':
-    options = optParser(['-p', '9220', '-s', 'localhost', '-i', 'arci-test', '-a', 'ar_std_lem'])
-    data = read_text('./data/words_with_hamza.json')
-    for t in data:
-        request = build_request(options, text=t['text'])
-        response = send_request(request)
-        results = handle_response(response)
-        t['result'] = results
-        t['inflect'] = len(results) == 1 and t['text'] not in results
-
-    with open('./data/words_with_hamza_analyzer.json', 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=4, ensure_ascii=False)
