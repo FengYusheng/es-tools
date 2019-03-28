@@ -71,11 +71,17 @@ def build_request(options, method='POST', text='returnning'):
     return request
 
 
-def build_rosette_request(self, text):
+def build_rosette_request(text):
     '''
     curl -s -H "Content-Type:application/json;charset=utf-8" -XPOST https://demo.rosette.com/api/index.php/algorithms/morphological_analysis?demo_id=-1 -d '{"content":"نشتري"}'
     '''
-    pass
+    request = 'curl -s -H "Content-Type:application/json;charset=utf-8" '
+    request += '-XPOST '
+    request += 'https://demo.rosette.com/api/index.php/algorithms/morphological_analysis?demo_id=-1'
+    request += ' -d \'{"content":'
+    request += '"' + text + '"'
+    request += '}\''
+    return request
 
 
 def send_request(request):
@@ -122,7 +128,7 @@ def send_request_to_elasticsearch(root, inflection):
 
 
 def send_request_to_rosette(root, inflection):
-    print('rosette')
+    request = build_rosette_request(inflection)
 
 
 def process_inflection_in_a_csv_file(csv_file, analyzer='msarhan'):
