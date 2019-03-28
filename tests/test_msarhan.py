@@ -19,7 +19,7 @@ class TestMsarhan(unittest.TestCase):
         process_inflection_in_a_csv_file('./data/regular_verbs.csv', analyzer='msarhan')
 
 
-    # @unittest.skip("Skip hamza for now")
+    @unittest.skip("Skip hamza for now")
     def test_hamza_with_msarhan(self):
         process_inflection_in_a_csv_file('./data/hamza.csv', analyzer='msarhan')
 
@@ -29,7 +29,7 @@ class TestMsarhan(unittest.TestCase):
         process_inflection_in_a_csv_file('./data/nouns.csv', analyzer='msarhan')
 
 
-    @unittest.skip("Skip punctuation for now")
+    # @unittest.skip("Skip punctuation for now")
     def test_punctuation_with_msarhan(self):
         process_inflection_in_a_csv_file('./data/punctuation.csv', analyzer='msarhan')
 

@@ -24,7 +24,7 @@ class TestElastisearch(unittest.TestCase):
         process_inflection_in_a_csv_file('./data/nouns.csv', analyzer='elasticsearch')
 
 
-    @unittest.skip("Skip punctuation for now")
+    # @unittest.skip("Skip punctuation for now")
     def test_punctuation_with_elasticsearch(self):
         process_inflection_in_a_csv_file('./data/punctuation.csv', analyzer='elasticsearch')
 
