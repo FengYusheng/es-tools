@@ -71,6 +71,13 @@ def build_request(options, method='POST', text='returnning'):
     return request
 
 
+def build_rosette_request(self, text):
+    '''
+    curl -s -H "Content-Type:application/json;charset=utf-8" -XPOST https://demo.rosette.com/api/index.php/algorithms/morphological_analysis?demo_id=-1 -d '{"content":"نشتري"}'
+    '''
+    pass
+
+
 def send_request(request):
     completed_process = subprocess.run(request, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, check=True, universal_newlines=True)
     response = completed_process.stdout if completed_process.stderr == '' else completed_process.stderr
@@ -114,6 +121,8 @@ def send_request_to_elasticsearch(root, inflection):
     return response
 
 
+def send_request_to_rosette(root, inflection):
+    print('rosette')
 
 
 def process_inflection_in_a_csv_file(csv_file, analyzer='msarhan'):
@@ -135,6 +144,8 @@ def process_inflection_in_a_csv_file(csv_file, analyzer='msarhan'):
                 elif analyzer == 'elasticsearch':
                     response = send_request_to_elasticsearch(row['﻿Original'], row['Inflection'])
                     handle_elasticsearch_response(response, row['﻿Original'], row['Inflection'], report_writer)
+                elif analyzer == 'rosette':
+                    send_request_to_rosette(row['﻿Original'], row['Inflection'])
 
             print('Count: {0} Succ: {1}'.format(count, succ))
 
@@ -148,7 +159,8 @@ __all__ = [
     'handle_response',
     'process_inflection_in_a_csv_file',
     'send_request_to_msarhan',
-    'handle_msarhan_response'
+    'handle_msarhan_response',
+    'send_request_to_rosette'
 ]
 
 
