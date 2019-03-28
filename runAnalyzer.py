@@ -41,9 +41,17 @@ def handle_elasticsearch_response(response, original, inflection, report_writer=
 
 def handle_rosette_response(response, original, inflection, report_writer=None):
     global count, succ
-    print('result' in response and 'lemmas' in response['result'])
     if not ('result' in response and 'lemmas' in response['result']):
-        print('hhhh')
+        print(response)
+        raise(TypeError('Connection Broken!'))
+
+    results = response['result']['lemmas']
+    results = [i.strip() for i in results]
+    print({'Original': original, 'Inflection' : inflection, 'rosette' : response['result']['lemmas'], 'is_same' : original in results})
+    report_writer and report_writer.writerow({'Original':original, 'Inflection':inflection, 'rosette':' '.join(results), 'is_same':original in results})
+
+    count += 1
+    succ = succ + 1 if original in results else succ
 
 
 def optParser(args=[]):
@@ -162,7 +170,6 @@ def process_inflection_in_a_csv_file(csv_file, analyzer='msarhan'):
                 elif analyzer == 'rosette':
                     response = send_request_to_rosette(row['﻿Original'], row['Inflection'])
                     handle_rosette_response(response, row['﻿Original'], row['Inflection'], report_writer)
-                    break
 
             print('Count: {0} Succ: {1}'.format(count, succ))
 
