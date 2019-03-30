@@ -18,7 +18,6 @@ class TestRosette(unittest.TestCase):
     def test_build_regular_verb_expection_list(self):
         expection = build_expection_list_from_a_csv('./data/regular_verbs.csv')
         self.assertEqual(expection[0], 'نقل')
-        print(expection)
 
 
 
