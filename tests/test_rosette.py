@@ -12,12 +12,12 @@ class TestRosette(unittest.TestCase):
 
     def test_build_regular_verb_list(self):
         inflections = build_word_list_from_a_csv('./data/regular_verbs.csv')
-        self.assertEqual(next(inflections)[1], 'نقل')
+        self.assertEqual(inflections[0], 'نقل')
 
 
     def test_build_regular_verb_expection_list(self):
         expection = build_expection_list_from_a_csv('./data/regular_verbs.csv')
-        self.assertEqual(next(expection)[1], 'نقل')
+        self.assertEqual(expection[0], 'نقل')
 
 
 

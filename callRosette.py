@@ -13,7 +13,7 @@ def build_word_list_from_a_csv(csv_file):
         csv_reader = csv.DictReader(csv_file)
         inflections = [row['Inflection'].strip() for row in csv_reader]
 
-    return enumerate(inflections)
+    return inflections
 
 
 def build_expection_list_from_a_csv(csv_file):
@@ -25,13 +25,17 @@ def build_expection_list_from_a_csv(csv_file):
         csv_reader = csv.DictReader(csv_file)
         expection = [row['﻿Original'].strip() for row in csv_reader]
 
-    return enumerate(expection)
+    return expection
 
 
+
+def send_request_to_rosette(inflections):
+    pass
 
 
 
 __all__ = [
     'build_word_list_from_a_csv',
-    'build_expection_list_from_a_csv'
+    'build_expection_list_from_a_csv',
+    'send_request_to_rosette'
 ]
