@@ -11,7 +11,8 @@ class TestRosette(unittest.TestCase):
 
 
     def test_build_regular_verb_list(self):
-        build_word_list_from_a_csv('./data/regular_verbs.csv')
+        inflections = build_word_list_from_a_csv('./data/regular_verbs.csv')
+        print(inflections)
 
 
 

@@ -11,8 +11,9 @@ def build_word_list_from_a_csv(csv_file):
 
     with open(csv_file, 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
-        for row in csv_reader:
-            print(row['Original'])
+        inflections = [row['Inflection'] for row in csv_reader]
+
+    return inflections
 
 
 
