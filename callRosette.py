@@ -13,7 +13,7 @@ def build_word_list_from_a_csv(csv_file):
         csv_reader = csv.DictReader(csv_file)
         inflections = [row['Inflection'] for row in csv_reader]
 
-    return inflections
+    return enumerate(inflections)
 
 
 
