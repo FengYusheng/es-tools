@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from runAnalyzer import *
+from callRosette import *
 
 
 class TestRosette(unittest.TestCase):
-    def test_rosette(self):
-        process_inflection_in_a_csv_file('./data/regular_verbs.csv', 'rosette')
-
+    def test_raise_an_exception_when_read_an_nonexistent_csv_file(self):
+        with self.assertRaises(OSError):
+            build_request_from_a_csv('./data/nonexistent.csv')
 
 
 

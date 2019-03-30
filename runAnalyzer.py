@@ -45,13 +45,17 @@ def handle_rosette_response(response, original, inflection, report_writer=None):
         print(response)
         raise(TypeError('Connection Broken!'))
 
+    print('original : {0}'.format(original))
+    print('inflection : {0}'.format(inflection))
+    print('result : {0}'.format(response['result']['lemmas']))
     results = response['result']['lemmas']
-    results = [i.strip() for i in results]
-    print({'Original': original, 'Inflection' : inflection, 'rosette' : response['result']['lemmas'], 'is_same' : original in results})
+    results = [i.strip() for i in results if i is not None]
+    is_same = original in results
+    print({'Original': original, 'Inflection' : inflection, 'rosette' : response['result']['lemmas'], 'is_same' : is_same})
     report_writer and report_writer.writerow({'Original':original, 'Inflection':inflection, 'rosette':' '.join(results), 'is_same':original in results})
 
     count += 1
-    succ = succ + 1 if original in results else succ
+    succ = succ + 1 if is_same else succ
 
 
 def optParser(args=[]):
@@ -88,7 +92,7 @@ def build_request(options, method='POST', text='returnning'):
 
 def build_rosette_request(text):
     '''
-    curl -s -H "Content-Type:application/json;charset=utf-8" -XPOST https://demo.rosette.com/api/index.php/algorithms/morphological_analysis?demo_id=-1 -d '{"content":"نشتري"}'
+    curl -s -H "Content-Type:application/json;charset=utf-8" -XPOST http://demo.rosette.com/api/index.php/algorithms/morphological_analysis?demo_id=-1 -d '{"content":"نشتري"}'
     '''
     request = 'curl -s -H "Content-Type:application/json;charset=utf-8" '
     request += '-XPOST '
@@ -100,7 +104,14 @@ def build_rosette_request(text):
 
 
 def send_request(request):
-    completed_process = subprocess.run(request, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, check=True, universal_newlines=True)
+    retry = True
+    while retry:
+        try:
+            completed_process = subprocess.run(request, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, check=True, universal_newlines=True)
+            retry = False
+        except Exception as e:
+            retry = True
+    # completed_process = subprocess.run(request, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, check=True, universal_newlines=True)
     response = completed_process.stdout if completed_process.stderr == '' else completed_process.stderr
     return json.loads(response, encoding='utf-8')
 
