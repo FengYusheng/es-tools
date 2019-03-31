@@ -29,7 +29,8 @@ class TestRosette(unittest.TestCase):
 
     def test_send_regular_verb_list_to_rosette_morphology_lemmas(self):
         inflections = build_word_list_from_a_csv('./data/regular_verbs.csv')
-        print(' '.join(inflections))
+        result = send_request_to_rosette(' '.join(inflections))
+        print(result)
 
 
 
