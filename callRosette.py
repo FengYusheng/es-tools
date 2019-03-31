@@ -31,11 +31,14 @@ def build_expection_list_from_a_csv(csv_file):
 
 
 
-def send_request_to_rosette(inflections=None):
+def send_request_to_rosette(word_list=None):
     api = API(user_key='d710f6b45bc1a291f43cd3310312160b')
 
-    if not inflections:
+    if not word_list:
         result = api.ping()
+    else:
+        #TODO lemmas
+        pass
 
     return result
 

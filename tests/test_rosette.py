@@ -20,10 +20,16 @@ class TestRosette(unittest.TestCase):
         self.assertEqual(expection[0], 'نقل')
 
 
+    @unittest.skip('Skip rosette call for now')
     def test_rosette_api_is_available(self):
         result = send_request_to_rosette()
         self.assertIn('message', result)
         self.assertEqual('Rosette at your service', result['message'])
+
+
+    def test_send_regular_verb_list_to_rosette_morphology_lemmas(self):
+        inflections = build_word_list_from_a_csv('./data/regular_verbs.csv')
+        print(' '.join(inflections))
 
 
 
