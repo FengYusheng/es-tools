@@ -20,6 +20,12 @@ class TestRosette(unittest.TestCase):
         self.assertEqual(expection[0], 'نقل')
 
 
+    def test_rosette_api_is_available(self):
+        result = send_request_to_rosette()
+        self.assertIn('message', result)
+        self.assertEqual('Rosette at your service', result['message'])
+
+
 
 if __name__ == '__main__':
     unittest.main()

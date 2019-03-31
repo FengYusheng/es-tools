@@ -3,6 +3,8 @@ import os
 import csv
 import json
 
+from rosette.api import API
+
 
 def build_word_list_from_a_csv(csv_file):
     csv_file = os.path.realpath(os.path.abspath(os.path.expandvars(os.path.expanduser(csv_file))))
@@ -29,8 +31,13 @@ def build_expection_list_from_a_csv(csv_file):
 
 
 
-def send_request_to_rosette(inflections):
-    pass
+def send_request_to_rosette(inflections=None):
+    api = API(user_key='d710f6b45bc1a291f43cd3310312160b')
+
+    if not inflections:
+        result = api.ping()
+
+    return result
 
 
 
