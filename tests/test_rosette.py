@@ -28,9 +28,17 @@ class TestRosette(unittest.TestCase):
 
 
     def test_send_regular_verb_list_to_rosette_morphology_lemmas(self):
+        token_report = './data/regular_verbs_rosette_token_report.csv'
+        lemma_report = './data/regular_verbs_rosette_lemma_report.csv'
         inflections = build_word_list_from_a_csv('./data/regular_verbs.csv')
-        result = send_request_to_rosette(' '.join(inflections))
-        print(result)
+        expection_list = build_expection_list_from_a_csv('./data/regular_verbs.csv')
+        response = send_request_to_rosette(' '.join(inflections))
+        handle_rosette_morphology_token_response(token_report, response, inflections)
+        handle_rosette_morphology_lemma_response(lemma_report, response, expection_list)
+        # self.maxDiff = None
+        # self.assertEquals(inflections, result['tokens'])
+        self.assertEqual(len(response['tokens']), len(expection_list))
+        self.assertEqual(len(response['tokens']), len(inflections))
 
 
 

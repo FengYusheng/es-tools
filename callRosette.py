@@ -5,7 +5,6 @@ import json
 
 from rosette.api import API, DocumentParameters, RosetteException
 
-
 def build_word_list_from_a_csv(csv_file):
     csv_file = os.path.realpath(os.path.abspath(os.path.expandvars(os.path.expanduser(csv_file))))
     if not os.access(csv_file, os.F_OK|os.R_OK):
@@ -52,8 +51,30 @@ def send_request_to_rosette(word_list=None):
     return respone
 
 
-def handle_rosette_lemma_response(respone):
-    pass
+def handle_rosette_morphology_lemma_response(csv_report, response, expection_list):
+    count = succ = 0
+    with open(csv_report, 'w') as csv_report:
+        csv_writer = csv.DictWriter(csv_report, fieldnames=['Original', 'Lemma', 'is_same'])
+        for i in range(len(expection_list)):
+            expect = expection_list[i].strip()
+            lemma = response['lemmas'][i].strip()
+            csv_writer.writerow({'Original':expect, 'Lemma':lemma, 'is_same':expect==lemma})
+            print({'Original':expect, 'Lemma':lemma, 'is_same':expect==lemma})
+
+            count += 1
+            succ += 1 if expect==lemma else succ
+
+    print('count: {0}, succ: {1}'.format(count, succ))
+
+
+def handle_rosette_morphology_token_response(csv_report, response, expection_list):
+    with open(csv_report, 'w') as csv_report:
+        csv_writer = csv.DictWriter(csv_report, fieldnames=['Original', 'Token', 'is_same'])
+        for i in range(len(expection_list)):
+            expect = expection_list[i].strip()
+            token = response['tokens'][i].strip()
+            if expect != token:
+                csv_writer.writerow({'Original':expect, 'Token':token, 'is_same':expect==token})
 
 
 
@@ -61,5 +82,6 @@ __all__ = [
     'build_word_list_from_a_csv',
     'build_expection_list_from_a_csv',
     'send_request_to_rosette',
-    'handle_rosette_lemma_response'
+    'handle_rosette_morphology_lemma_response',
+    'handle_rosette_morphology_token_response'
 ]
