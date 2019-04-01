@@ -29,7 +29,7 @@ class TestMsarhan(unittest.TestCase):
         process_inflection_in_a_csv_file('./data/nouns.csv', analyzer='msarhan')
 
 
-    # @unittest.skip("Skip punctuation for now")
+    @unittest.skip("Skip punctuation for now")
     def test_punctuation_with_msarhan(self):
         process_inflection_in_a_csv_file('./data/punctuation.csv', analyzer='msarhan')
 
@@ -41,6 +41,10 @@ class TestMsarhan(unittest.TestCase):
     @unittest.skip("Skip derivation for now")
     def test_derivation_with_msarhan(self):
         process_inflection_in_a_csv_file('./data/derivation.csv', analyzer='msarhan')
+
+
+    def test_roots_with_msarhan(self):
+        process_inflection_in_a_csv_file('./data/roots.csv', analyzer='msarhan')
 
 
 if __name__ == '__main__':

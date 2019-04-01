@@ -110,12 +110,24 @@ class TestRosette(unittest.TestCase):
         handle_rosette_morphology_lemma_response(lemma_report, response, expection_list, inflections)
 
 
-    # @unittest.skip('Skip punctuation for now')
+    @unittest.skip('Skip punctuation for now')
     def test_punctuation_with_rosette_morphology_lemmas(self):
         token_report = './data/punctuation_rosette_token_report.csv'
         lemma_report = './data/punctuation_rosette_lemma_report.csv'
         inflections = build_word_list_from_a_csv('./data/punctuation.csv')
         expection_list = build_expection_list_from_a_csv('./data/punctuation.csv')
+        response = send_request_to_rosette(' '.join(inflections))
+        self.assertEqual(len(response['tokens']), len(expection_list))
+        self.assertEqual(len(response['tokens']), len(inflections))
+        handle_rosette_morphology_token_response(token_report, response, inflections)
+        handle_rosette_morphology_lemma_response(lemma_report, response, expection_list, inflections)
+
+
+    def test_root_with_rosette_morphology_lemmas(self):
+        token_report = './data/roots_rosette_token_report.csv'
+        lemma_report = './data/roots_rosette_lemma_report.csv'
+        inflections = build_word_list_from_a_csv('./data/roots.csv')
+        expection_list = build_expection_list_from_a_csv('./data/roots.csv')
         response = send_request_to_rosette(' '.join(inflections))
         self.assertEqual(len(response['tokens']), len(expection_list))
         self.assertEqual(len(response['tokens']), len(inflections))
