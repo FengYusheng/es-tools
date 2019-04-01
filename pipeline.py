@@ -30,8 +30,6 @@ def collect_analyzer_results(csv_file, analyzer):
     token_templete = read_token_templete()
     with open(csv_file, 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
-        # print(repr('Original'))
-        # print(repr('Original'))
         token = copy(token_templete)
         for row in csv_reader:
             if row['Original'] != token['token']:
@@ -49,8 +47,22 @@ def collect_analyzer_results(csv_file, analyzer):
     return records
 
 
-def collect_hunspell_results(csv_file, analyzer='ara_hunspell'):
-    pass
+def calculate_hunspell_token_count(ara_hunspell_count):
+    new_ara_hunspell_count = copy(ara_hunspell_count)
+    for key in ara_hunspell_count:
+        count_ = 0
+        key_list = key.split(' ')
+
+        for key2 in ara_hunspell_count:
+            key2_list = key2.split(' ')
+            for k in key_list:
+                if k in key2_list:
+                    count_ += ara_hunspell_count[key2]
+                    break
+
+        new_ara_hunspell_count[key] = count_
+
+    return new_ara_hunspell_count
 
 
 def add_new_analyzer_results(records, csv_file, analyzer):
@@ -96,6 +108,8 @@ def generate_accuracy_csv(report_name, records):
             token_, terms_, msarhan_, rbl_ara_, rbl_ara_folding_, ar_std_lem_folding1_, ar_std_lem_folding2_, ara_hunspell_ =  token['token'], token['terms'], token['msarhan'], token['rbl_ara'], token['rbl_ara_folding'], token['ar_std_lem_folding1'], token['ar_std_lem_folding2'], token['ara_hunspell']
 
             msarhan_count, rbl_ara_count, rbl_ara_folding_count, ar_std_lem_folding1_count, ar_std_lem_folding2_count, ara_hunspell_count = token['msarhan_count'], token['rbl_ara_count'], token['rbl_ara_folding_count'], token['ar_std_lem_folding1_count'], token['ar_std_lem_folding2_count'], token['ara_hunspell_count']
+
+            ara_hunspell_count = calculate_hunspell_token_count(ara_hunspell_count)
 
             term_count = len(terms_)
             for i in range(term_count):
