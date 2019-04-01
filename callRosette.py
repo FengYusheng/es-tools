@@ -36,9 +36,6 @@ def send_request_to_rosette(word_list=None):
     if not word_list:
         respone = api.ping()
     else:
-        # Specify language.
-        # api.set_option('language', 'ara')
-        # api.set_option('content', word_list)
         params = DocumentParameters()
         params['language'] = 'ara'
         params['content'] = word_list
@@ -62,7 +59,7 @@ def handle_rosette_morphology_lemma_response(csv_report, response, expection_lis
             print({'Original':expect, 'Lemma':lemma, 'is_same':expect==lemma})
 
             count += 1
-            succ += 1 if expect==lemma else succ
+            succ = succ+1 if expect==lemma else succ
 
     print('count: {0}, succ: {1}'.format(count, succ))
 
