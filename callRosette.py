@@ -48,14 +48,16 @@ def send_request_to_rosette(word_list=None):
     return respone
 
 
-def handle_rosette_morphology_lemma_response(csv_report, response, expection_list):
+def handle_rosette_morphology_lemma_response(csv_report, response, expection_list, inflection_list):
     count = succ = 0
     with open(csv_report, 'w') as csv_report:
-        csv_writer = csv.DictWriter(csv_report, fieldnames=['Original', 'Lemma', 'is_same'])
+        csv_writer = csv.DictWriter(csv_report, fieldnames=['Original', 'Inflection', 'Lemma', 'is_same'])
+        csv_writer.writeheader()
         for i in range(len(expection_list)):
             expect = expection_list[i].strip()
             lemma = response['lemmas'][i].strip()
-            csv_writer.writerow({'Original':expect, 'Lemma':lemma, 'is_same':expect==lemma})
+            inflect = inflection_list[i].strip()
+            csv_writer.writerow({'Original':expect, 'Inflection':inflect, 'Lemma':lemma, 'is_same':expect==lemma})
             print({'Original':expect, 'Lemma':lemma, 'is_same':expect==lemma})
 
             count += 1
@@ -66,12 +68,13 @@ def handle_rosette_morphology_lemma_response(csv_report, response, expection_lis
 
 def handle_rosette_morphology_token_response(csv_report, response, expection_list):
     with open(csv_report, 'w') as csv_report:
-        csv_writer = csv.DictWriter(csv_report, fieldnames=['Original', 'Token', 'is_same'])
+        csv_writer = csv.DictWriter(csv_report, fieldnames=['Input', 'Token', 'is_same'])
+        csv_writer.writeheader()
         for i in range(len(expection_list)):
             expect = expection_list[i].strip()
             token = response['tokens'][i].strip()
             if expect != token:
-                csv_writer.writerow({'Original':expect, 'Token':token, 'is_same':expect==token})
+                csv_writer.writerow({'Input':expect, 'Token':token, 'is_same':expect==token})
 
 
 

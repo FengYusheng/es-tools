@@ -5,16 +5,19 @@ from callRosette import *
 
 
 class TestRosette(unittest.TestCase):
+    @unittest.skip('Skip test a nonexistent file')
     def test_raise_an_exception_when_read_an_nonexistent_csv_file(self):
         with self.assertRaises(OSError):
             build_word_list_from_a_csv('./data/nonexistent.csv')
 
 
+    @unittest.skip('Skip build word list')
     def test_build_regular_verb_list(self):
         inflections = build_word_list_from_a_csv('./data/regular_verbs.csv')
         self.assertEqual(inflections[0], 'نقل')
 
 
+    @unittest.skip('Skip build word list')
     def test_build_regular_verb_expection_list(self):
         expection = build_expection_list_from_a_csv('./data/regular_verbs.csv')
         self.assertEqual(expection[0], 'نقل')
@@ -39,7 +42,7 @@ class TestRosette(unittest.TestCase):
         self.assertEqual(len(response['tokens']), len(expection_list))
         self.assertEqual(len(response['tokens']), len(inflections))
         handle_rosette_morphology_token_response(token_report, response, inflections)
-        handle_rosette_morphology_lemma_response(lemma_report, response, expection_list)
+        handle_rosette_morphology_lemma_response(lemma_report, response, expection_list, inflections)
 
 
     @unittest.skip('Skip irregular verbs for now')
@@ -52,7 +55,7 @@ class TestRosette(unittest.TestCase):
         self.assertEqual(len(response['tokens']), len(expection_list))
         self.assertEqual(len(response['tokens']), len(inflections))
         handle_rosette_morphology_token_response(token_report, response, inflections)
-        handle_rosette_morphology_lemma_response(lemma_report, response, expection_list)
+        handle_rosette_morphology_lemma_response(lemma_report, response, expection_list, inflections)
 
 
     @unittest.skip('Skip nouns for now')
@@ -65,7 +68,7 @@ class TestRosette(unittest.TestCase):
         self.assertEqual(len(response['tokens']), len(expection_list))
         self.assertEqual(len(response['tokens']), len(inflections))
         handle_rosette_morphology_token_response(token_report, response, inflections)
-        handle_rosette_morphology_lemma_response(lemma_report, response, expection_list)
+        handle_rosette_morphology_lemma_response(lemma_report, response, expection_list, inflections)
 
 
     @unittest.skip('Skip numerals for now')
@@ -78,7 +81,7 @@ class TestRosette(unittest.TestCase):
         self.assertEqual(len(response['tokens']), len(expection_list))
         self.assertEqual(len(response['tokens']), len(inflections))
         handle_rosette_morphology_token_response(token_report, response, inflections)
-        handle_rosette_morphology_lemma_response(lemma_report, response, expection_list)
+        handle_rosette_morphology_lemma_response(lemma_report, response, expection_list, inflections)
 
 
     @unittest.skip('Skip derivatives for now')
@@ -91,7 +94,7 @@ class TestRosette(unittest.TestCase):
         self.assertEqual(len(response['tokens']), len(expection_list))
         self.assertEqual(len(response['tokens']), len(inflections))
         handle_rosette_morphology_token_response(token_report, response, inflections)
-        handle_rosette_morphology_lemma_response(lemma_report, response, expection_list)
+        handle_rosette_morphology_lemma_response(lemma_report, response, expection_list, inflections)
 
 
     @unittest.skip('Skip hamza for now')
@@ -104,10 +107,10 @@ class TestRosette(unittest.TestCase):
         self.assertEqual(len(response['tokens']), len(expection_list))
         self.assertEqual(len(response['tokens']), len(inflections))
         handle_rosette_morphology_token_response(token_report, response, inflections)
-        handle_rosette_morphology_lemma_response(lemma_report, response, expection_list)
+        handle_rosette_morphology_lemma_response(lemma_report, response, expection_list, inflections)
 
 
-    @unittest.skip('Skip punctuation for now')
+    # @unittest.skip('Skip punctuation for now')
     def test_punctuation_with_rosette_morphology_lemmas(self):
         token_report = './data/punctuation_rosette_token_report.csv'
         lemma_report = './data/punctuation_rosette_lemma_report.csv'
@@ -117,7 +120,7 @@ class TestRosette(unittest.TestCase):
         self.assertEqual(len(response['tokens']), len(expection_list))
         self.assertEqual(len(response['tokens']), len(inflections))
         handle_rosette_morphology_token_response(token_report, response, inflections)
-        handle_rosette_morphology_lemma_response(lemma_report, response, expection_list)
+        handle_rosette_morphology_lemma_response(lemma_report, response, expection_list, inflections)
 
 
 if __name__ == '__main__':
