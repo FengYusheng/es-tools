@@ -188,7 +188,6 @@ def process_inflection_in_a_csv_file(csv_file, analyzer='msarhan'):
 
 __all__ = [
     'optParser',
-    'read_text',
     'build_request',
     'send_request',
     'handle_response',
