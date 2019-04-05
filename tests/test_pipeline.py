@@ -12,7 +12,7 @@ class TestPipeline(unittest.TestCase):
 
 
     def test_read_record_templete_from_a_json_file(self):
-        record = read_record_templete()
+        record = read_token_templete()
         self.assertIn('token', record)
         self.assertIn('terms', record)
         self.assertIn('msarhan', record)
@@ -20,6 +20,14 @@ class TestPipeline(unittest.TestCase):
         self.assertIn('rosette', record)
         self.assertIn('root', record)
         self.assertIn('lemma', record)
+
+
+    def test_save_report(self):
+        save_report('test.json')
+
+
+    def test_read_msarhan_results(self):
+        run('./data/regular_verbs_msarhan_report.csv', 'msarhan')
 
 
 
