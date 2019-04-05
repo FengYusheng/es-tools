@@ -7,6 +7,18 @@ import json
 import csv
 
 g_words = {}
+g_record_templete = './templetes/pipeline_record_templete.json'
+
+
+def read_record_templete():
+    record = None
+    if not os.access(g_record_templete, os.F_OK|os.R_OK):
+        raise  OSError("The file {0} doesn't exist or you have no read permission.".format(g_record_templete))
+
+    with open(g_record_templete, 'r') as templete_file:
+        record = json.load(templete_file)
+
+    return record
 
 
 def run(csv_file):
@@ -15,21 +27,12 @@ def run(csv_file):
     if not os.access(csv_file, os.F_OK|os.R_OK):
         raise  OSError("The file {0} doesn't exist or you have no read permission.".format(csv_file))
 
-    with open(csv_file, 'r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        for row in csv_reader:
-            g_words.setdefault(row['﻿Original'], {})
-            current_word = row['﻿Original'] if row['﻿Original'] != current_word else current_word
-            g_words[current_word].setdefault('inflections', {})
-            inflection = g_words[current_word]['inflections']
-            inflection.setdefault(row['Inflection'], 0)
-            inflection[row['Inflection']] += 1
 
-        print(json.dumps(g_words, indent=4, ensure_ascii=False))
-        print(len(g_words))
+
 
 
 
 __all__ = [
-    'run'
+    'run',
+    'read_record_templete'
 ]
