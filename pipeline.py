@@ -24,19 +24,9 @@ def read_token_templete():
     return record
 
 
-def save_report(report_name, records=[]):
-    dest = os.path.join(g_report_repo, report_name)
-
-
-
-def run(csv_file, analyzer=None):
-    current_word = None
+def collect_analyzer_results(csv_file, analyzer=None):
     records = []
     token_templete = read_token_templete()
-    csv_file = os.path.realpath(os.path.abspath(os.path.expandvars(os.path.expanduser(csv_file))))
-    if not os.access(csv_file, os.F_OK|os.R_OK):
-        raise  OSError("The file {0} doesn't exist or you have no read permission.".format(csv_file))
-
     with open(csv_file, 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         # print(repr('Original'))
@@ -49,18 +39,37 @@ def run(csv_file, analyzer=None):
                     records.append(token)
                 token = copy(token_templete)
                 token['token'] = row['﻿Original']
+
             token['terms'].append(row['Inflection'])
-            if analyzer:
-                token[analyzer].append(row[analyzer])
+            analyzer and token[analyzer].append(row[analyzer])
+
+    token[analyzer] = Counter(token[analyzer])
+    records.append(token)
+    return records
 
 
-    
+def save_report(report_name, records):
+    with open(report_name, 'w') as report:
+        json.dump(records, report, ensure_ascii=False, indent=4)
 
+
+
+
+def run(csv_file, analyzer=None):
+    csv_file = os.path.realpath(os.path.abspath(os.path.expandvars(os.path.expanduser(csv_file))))
+    if not os.access(csv_file, os.F_OK|os.R_OK):
+        raise  OSError("The file {0} doesn't exist or you have no read permission.".format(csv_file))
+
+    records = collect_analyzer_results(csv_file, analyzer)
+    report_name = os.path.basename(csv_file).rpartition('.')[0] + '.json'
+    report_name = os.path.join(g_report_repo, report_name)
+    save_report(report_name, records)
 
 
 
 __all__ = [
     'run',
     'read_token_templete',
+    'collect_analyzer_results',
     'save_report'
 ]

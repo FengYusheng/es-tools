@@ -22,11 +22,21 @@ class TestPipeline(unittest.TestCase):
         self.assertIn('lemma', record)
 
 
+    def test_collect_analzyer_results(self):
+        records = collect_analyzer_results('./data/regular_verbs_msarhan_report.csv', 'msarhan')
+        self.assertEqual(len(records), 22)
+        self.assertEqual(records[-1]['token'], 'نتج')
+        self.assertEqual(records[0]['token'], 'نقل')
+        self.assertIn('منع', records[2]['msarhan'])
+
+
     def test_save_report(self):
-        save_report('test.json')
+        records = collect_analyzer_results('./data/regular_verbs_msarhan_report.csv', 'msarhan')
+        save_report('./report_repo/regular_verbs_msarhan_report.json', records)
 
 
-    def test_read_msarhan_results(self):
+    @unittest.skip('Skip test run.')
+    def test_run(self):
         run('./data/regular_verbs_msarhan_report.csv', 'msarhan')
 
 
