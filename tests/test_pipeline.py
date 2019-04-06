@@ -40,6 +40,13 @@ class TestPipeline(unittest.TestCase):
         save_report('./report_repo/regular_verbs.json', records)
 
 
+    def test_gernerate_accuracy_csv(self):
+        records = collect_analyzer_results('./data/regular_verbs_msarhan_report.csv', 'msarhan')
+        records = add_new_analyzer_results(records, './data/regular_verbs_elasticsearch_report.csv', 'elasticsearch')
+        records = add_new_analyzer_results(records, './data/regular_verbs_rosette_lemma_report.csv', 'rosette')
+        generate_accuracy_csv('./report_repo/regular_verbs.csv', records)
+
+
     @unittest.skip('Skip save.')
     def test_save_report(self):
         records = collect_analyzer_results('./data/regular_verbs_msarhan_report.csv', 'msarhan')

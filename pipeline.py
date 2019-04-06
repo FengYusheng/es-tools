@@ -11,6 +11,7 @@ from collections import Counter
 g_words = {}
 g_record_templete = './templetes/pipeline_record_templete.json'
 g_report_repo = './report_repo'
+g_accuracy_format = '{0:.1f}%'
 
 
 def read_token_templete():
@@ -35,7 +36,7 @@ def collect_analyzer_results(csv_file, analyzer):
         for row in csv_reader:
             if row['﻿Original'] != token['token']:
                 if analyzer and len(token[analyzer]):
-                    token[analyzer] = Counter(token[analyzer])
+                    token[analyzer+'_count'] = Counter(token[analyzer])
                     records.append(token)
                 token = copy(token_templete)
                 token['token'] = row['﻿Original']
@@ -43,7 +44,7 @@ def collect_analyzer_results(csv_file, analyzer):
             token['terms'].append(row['Inflection'])
             token[analyzer].append(row[analyzer])
 
-    token[analyzer] = Counter(token[analyzer])
+    token[analyzer+'_count'] = Counter(token[analyzer])
     records.append(token)
     return records
 
@@ -55,20 +56,46 @@ def add_new_analyzer_results(records, csv_file, analyzer):
         for row in csv_reader:
             if row['﻿Original'] != token['token']:
                 if len(token[analyzer]):
-                    token[analyzer] = Counter(token[analyzer])
+                    token[analyzer+'_count'] = Counter(token[analyzer])
                 for t in records:
                     if t['token'] == row['﻿Original']:
                         token = t
                         break
-            token[analyzer].append(row['elasticsearch'])
+            token[analyzer].append(row[analyzer])
 
-    token[analyzer] = Counter(token[analyzer])
+    token[analyzer+'_count'] = Counter(token[analyzer])
     return records
 
 
 def save_report(report_name, records):
     with open(report_name, 'w') as report:
         json.dump(records, report, ensure_ascii=False, indent=4)
+
+
+def generate_accuracy_csv(report_name, records):
+    with open(report_name, 'w') as report:
+        csv_writer = csv.DictWriter(report, fieldnames=['token', 'term', 'msarhan', 'msarhan_accuracy', 'elasticsearch', 'es_accuracy', 'rosette', 'rosette_accuracy'])
+        csv_writer.writeheader()
+        for token in records:
+            if not len(token['terms']) == len(token['msarhan']) == len(token['elasticsearch']):
+                raise TypeError('Data format error.')
+
+            token_, terms_, msarhan_, es_, rosette_ =  token['token'], token['terms'], token['msarhan'], token['elasticsearch'], token['rosette']
+            msarhan_count, es_count, rosette_count = token['msarhan_count'], token['elasticsearch_count'], token['rosette_count']
+            term_count = len(terms_)
+            for i in range(term_count):
+                # print(g_accuracy_format.format(msarhan_count[msarhan_[i]]*100/term_count))
+                # print(g_accuracy_format.format(es_count[es_[i]]*100/term_count))
+                csv_writer.writerow({
+                    'token' : token_,
+                    'term' : terms_[i],
+                    'msarhan' : msarhan_[i],
+                    'msarhan_accuracy' : g_accuracy_format.format(msarhan_count[msarhan_[i]]*100/term_count),
+                    'elasticsearch' : es_[i],
+                    'es_accuracy' : g_accuracy_format.format(es_count[es_[i]]*100/term_count),
+                    'rosette' : rosette_[i],
+                    'rosette_accuracy' : g_accuracy_format.format(rosette_count[rosette_[i]]*100/term_count)
+                })
 
 
 def run(csv_file, analyzer=None):
@@ -88,5 +115,6 @@ __all__ = [
     'read_token_templete',
     'collect_analyzer_results',
     'add_new_analyzer_results',
+    'generate_accuracy_csv',
     'save_report'
 ]
