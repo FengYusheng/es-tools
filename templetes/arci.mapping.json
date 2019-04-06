@@ -1,0 +1,979 @@
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0,
+    "requests.cache.enable": true,
+    "index.store.type": "niofs",
+    "index.search.slowlog.threshold.query.warn": "10s",
+    "index.search.slowlog.threshold.query.info": "5s",
+    "index.search.slowlog.threshold.query.debug": "2s",
+    "index.search.slowlog.threshold.query.trace": "500ms",
+    "index.search.slowlog.threshold.fetch.warn": "1s",
+    "index.search.slowlog.threshold.fetch.info": "800ms",
+    "index.search.slowlog.threshold.fetch.debug": "500ms",
+    "index.search.slowlog.threshold.fetch.trace": "200ms",
+    "index.refresh_interval": "1s",
+    "index.max_result_window": 100000,
+    "index.merge.policy.expunge_deletes_allowed": 0,
+    "analysis": {
+      "analyzer": {
+        "default": {
+          "tokenizer": "whitespace",
+          "position_increment_gap": 512,
+          "char_filter": [
+            "to_spaces"
+          ],
+          "filter": [
+            "standard",
+            "icu_folding",
+            "lowercase"
+          ]
+        },
+        "chinese_analyzer": {
+          "tokenizer": "standard",
+          "position_increment_gap": 512,
+          "char_filter": [
+            "to_spaces"
+          ],
+          "filter": [
+            "cjk_width",
+            "lowercase"
+          ]
+        },
+        "korean_analyzer": {
+          "tokenizer": "unigram",
+          "position_increment_gap": 512,
+          "char_filter": [
+            "to_spaces"
+          ],
+          "filter": [
+            "lowercase"
+          ]
+        },
+        "lower_analyzer": {
+          "tokenizer": "keyword",
+          "position_increment_gap": 512,
+          "filter": [
+            "icu_folding",
+            "lowercase"
+          ]
+        },
+        "norm_lower_analyzer": {
+          "tokenizer": "keyword",
+          "position_increment_gap": 512,
+          "char_filter": [
+            "to_spaces",
+            "compact_spaces"
+          ],
+          "filter": [
+            "icu_folding",
+            "lowercase"
+          ]
+        },
+        "en_std": {
+          "tokenizer": "whitespace",
+          "position_increment_gap": 512,
+          "char_filter": [
+            "to_spaces"
+          ],
+          "filter": [
+            "standard",
+            "icu_folding",
+            "lowercase"
+          ]
+        },
+        "en_std_lem": {
+          "tokenizer": "whitespace",
+          "position_increment_gap": 512,
+          "char_filter": [
+            "to_spaces"
+          ],
+          "filter": [
+            "standard",
+            "icu_folding",
+            "lowercase",
+            "en_lemmatization"
+          ]
+        },
+        "en_std_syn": {
+          "tokenizer": "whitespace",
+          "position_increment_gap": 512,
+          "char_filter": [
+            "to_spaces"
+          ],
+          "filter": [
+            "standard",
+            "icu_folding",
+            "lowercase",
+            "en_synonym"
+          ]
+        },
+        "en_std_lem_syn": {
+          "tokenizer": "whitespace",
+          "position_increment_gap": 512,
+          "char_filter": [
+            "to_spaces"
+          ],
+          "filter": [
+            "standard",
+            "icu_folding",
+            "lowercase",
+            "en_lemm_synonym"
+          ]
+        },
+        "en_std_synaddress": {
+          "tokenizer": "whitespace",
+          "position_increment_gap": 512,
+          "char_filter": [
+            "to_spaces"
+          ],
+          "filter": [
+            "standard",
+            "icu_folding",
+            "lowercase",
+            "en_synonym_address"
+          ]
+        },
+        "ar_std_lem": {
+          "tokenizer": "whitespace",
+          "position_increment_gap": 512,
+          "char_filter": [
+            "to_spaces"
+          ],
+          "filter": [
+            "icu_folding",
+            "lowercase",
+            "arabic_stemmer"
+          ]
+        },
+        "ar_std": {
+          "tokenizer": "whitespace",
+          "position_increment_gap": 512,
+          "char_filter": [
+            "to_spaces"
+          ],
+          "filter": [
+            "icu_folding",
+            "lowercase"
+          ]
+      },
+      "ar_std_folding": {
+          "tokenizer": "whitespace",
+          "position_increment_gap": 512,
+          "char_filter": [
+            "to_spaces"
+          ],
+          "filter": [
+            "ar_folding",
+            "lowercase"
+          ]
+      }
+      },
+      "tokenizer": {
+        "unigram": {
+          "type": "nGram",
+          "min_gram": "1",
+          "max_gram": "1",
+          "token_chars": [
+            "letter",
+            "digit"
+          ]
+        }
+      },
+      "char_filter": {
+        "to_spaces": {
+          "type": "mapping",
+          "mappings_path": "fds4-compat.txt"
+        },
+        "compact_spaces": {
+          "type": "pattern_replace",
+          "pattern": "\\s+",
+          "replacement": " "
+        }
+      },
+      "filter": {
+        "arabic_stemmer": {
+          "type":       "stemmer",
+          "language":   "arabic"
+        },
+        "ar_folding": {
+            "type": "icu_folding",
+            "unicodeSetFilter": "[اَاٌاُاِاًاْاّأَأٌأٌأْأّإِآلآبَبٌبُبِبْبّتَتٌتُتِتْتّثَثٌثٌثِثْثّجَجٌجُجِجْجّحَحٌحُحِحْحّخَخٌخُخِخْخّدَدٌدِدْدّذَذٌذُذِذْذّرَرٌرُرِرْرّزَزٌزُزِزْزّسَسٌسُسِسْسّشَشٌشُشِشْشّصَصٌصُصِصْصّضَضٌضُضِضْضّطَطٌطُطِطْطّظَظٌظُظِظْظّعَعٌعُعِعْعّغَغٌغُغِغْغّفَفٌفُفِفْفّقَقٌقُقِقْقّكَكٌكٌكِكْكْلَلٌلُلِلْلّمَمٌمُمِمْمّنَنٌنُنِنْنّهَهٌهُهِهْهّوَوٌوُوِوْوّيَيٌيُيِيْيّ]"
+        },
+        "russian_folding": {
+          "type": "icu_folding",
+          "unicodeSetFilter": "[ё]"
+        },
+        "en_lemmatization": {
+          "type": "synonym",
+          "synonyms_path": "en_lem.txt"
+        },
+        "en_synonym": {
+          "type": "synonym",
+          "synonyms_path": "en_syn.txt"
+        },
+        "en_lemm_synonym": {
+          "type": "synonym",
+          "synonyms_path": "en_lem_syn.txt"
+        },
+        "en_synonym_address": {
+          "type": "synonym",
+          "synonyms_path": "en_synonyms_address.txt"
+        }
+      }
+    }
+  },
+  "mappings": {
+    "arci": {
+      "_all": {
+        "enabled": "false"
+      },
+      "properties": {
+        "processingtime": {
+          "type": "date",
+          "format": "dateOptionalTime"
+        },
+        "address": {
+          "type": "text",
+          "analyzer": "en_std",
+          "search_analyzer": "en_std_synaddress"
+        },
+        "topic": {
+          "type": "text",
+          "analyzer": "en_std",
+          "search_analyzer": "en_std_lem_syn"
+        },
+        "title": {
+          "type": "text",
+          "analyzer": "en_std",
+          "search_analyzer": "en_std_lem_syn",
+          "copy_to": "topic"
+        },
+        "abstract": {
+          "type": "text",
+          "analyzer": "en_std",
+          "search_analyzer": "en_std_lem_syn",
+          "copy_to": "topic"
+        },
+        "keywords": {
+          "type": "text",
+          "analyzer": "en_std",
+          "search_analyzer": "en_std_lem_syn",
+          "copy_to": "topic"
+        },
+        "keywordsplus": {
+          "type": "text",
+          "analyzer": "en_std",
+          "search_analyzer": "en_std_lem_syn",
+          "copy_to": "topic"
+        },
+        "sourcega": {
+          "type": "text",
+          "fields": {
+            "sourceganavigator": {
+              "type": "keyword",
+              "index": true
+            }
+          }
+        },
+        "source": {
+          "type": "text",
+          "fields": {
+            "sourcenavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "sourcesort": {
+          "type": "icu_collation_keyword",
+          "rules": "[reorder digit Latn Grek Cyrl Hani Kana Arab Hebr]"
+        },
+        "authorsort": {
+          "type": "icu_collation_keyword",
+          "rules": "[reorder digit Latn Grek Cyrl Hani Kana Arab Hebr]"
+        },
+        "authors": {
+          "type": "text"
+        },
+        "authorsphrase": {
+          "type": "text",
+          "analyzer": "lower_analyzer",
+          "copy_to": "authors"
+        },
+        "authorsrefine": {
+          "type": "text",
+          "index": false,
+          "fields": {
+            "authorsnavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "corpauthors": {
+          "type": "text",
+          "fields": {
+            "corpauthorsnavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "institution": {
+          "type": "text",
+          "analyzer": "en_std",
+          "search_analyzer": "en_std_synaddress",
+          "fields": {
+            "institutionnavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "prefinstitution": {
+          "type": "text",
+          "analyzer": "en_std",
+          "search_analyzer": "en_std_synaddress",
+          "fields": {
+            "prefinstnavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "allinstitution": {
+          "type": "text",
+          "analyzer": "norm_lower_analyzer"
+        },
+        "suborganization": {
+          "type": "text",
+          "analyzer": "en_std",
+          "search_analyzer": "en_std_synaddress"
+        },
+        "street": {
+          "type": "text",
+          "analyzer": "en_std",
+          "search_analyzer": "en_std_synaddress"
+        },
+        "city": {
+          "type": "text",
+          "analyzer": "en_std",
+          "search_analyzer": "en_std_synaddress"
+        },
+        "state": {
+          "type": "text",
+          "analyzer": "en_std",
+          "search_analyzer": "en_std_synaddress"
+        },
+        "country": {
+          "type": "text",
+          "analyzer": "en_std",
+          "search_analyzer": "en_std_synaddress",
+          "fields": {
+            "countrynavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "zip": {
+          "type": "text"
+        },
+        "conferencetitle": {
+          "type": "text",
+          "fields": {
+            "conferencetitlenavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "conferencesort": {
+          "type": "icu_collation_keyword",
+          "rules": "[reorder digit Latn Grek Cyrl Hani Kana Arab Hebr]"
+        },
+        "conferenceinfo": {
+          "type": "text"
+        },
+        "url": {
+          "type": "text",
+          "index": false
+        },
+        "loadtime": {
+          "type": "date",
+          "format": "dateOptionalTime",
+          "doc_values": true
+        },
+        "sortdate": {
+          "type": "date",
+          "format": "dateOptionalTime",
+          "doc_values": true
+        },
+        "acday180": {
+          "type": "integer",
+          "doc_values": true
+        },
+        "acalltime": {
+          "type": "integer",
+          "doc_values": true
+        },
+        "binnum": {
+          "type": "long"
+        },
+        "binid": {
+          "type": "long"
+        },
+        "fuid": {
+          "type": "keyword",
+          "index": true
+        },
+        "artno": {
+          "type": "text",
+          "analyzer": "lower_analyzer"
+        },
+        "docid": {
+          "type": "long"
+        },
+        "bibissueyear": {
+          "type": "text",
+          "fields": {
+            "bibissueyearnavigator": {
+              "type": "integer",
+              "doc_values": true
+            }
+          }
+        },
+        "editions": {
+          "type": "text",
+          "fields": {
+            "editionnavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "itemtype": {
+          "type": "text",
+          "fields": {
+            "doctypenavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "normdoctype": {
+          "type": "text",
+          "fields": {
+            "normdoctypenavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "ckey": {
+          "type": "text"
+        },
+        "category": {
+          "type": "text",
+          "fields": {
+            "categorynavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "heading": {
+          "type": "text",
+          "fields": {
+            "headingnavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "volume": {
+          "type": "text"
+        },
+        "volumesort": {
+          "type": "integer",
+          "doc_values": true
+        },
+        "issue": {
+          "type": "text"
+        },
+        "page": {
+          "type": "text"
+        },
+        "pagesort": {
+          "type": "integer",
+          "doc_values": true
+        },
+        "languageslimit": {
+          "type": "text",
+          "fields": {
+            "languagesnavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "rid": {
+          "type": "text",
+          "analyzer": "lower_analyzer"
+        },
+        "snid": {
+          "type": "text"
+        },
+        "fundingag": {
+          "type": "text",
+          "fields": {
+            "fundingagnavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "grantno": {
+          "type": "text",
+          "fields": {
+            "grantnonavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "meshheading": {
+          "type": "text",
+          "fields": {
+            "meshheadingnavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "meshqualifier": {
+          "type": "text",
+          "fields": {
+            "meshqualifiernavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "fundingtxt": {
+          "type": "text"
+        },
+        "citingyears": {
+          "type": "integer"
+        },
+        "citingeditiondates": {
+          "type": "integer"
+        },
+        "collection": {
+          "type": "text",
+          "fields": {
+            "collectionnavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "dbname": {
+          "type": "text",
+          "fields": {
+            "dbnamenavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "patentno": {
+          "type": "text"
+        },
+        "issueids": {
+          "type": "text",
+          "fields": {
+            "issueidsnavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "orgcount": {
+          "type": "integer"
+        },
+        "citingsrcscount": {
+          "type": "integer",
+          "doc_values": true
+        },
+        "citingsrcslocalcount": {
+          "type": "integer"
+        },
+        "colluid": {
+          "type": "text",
+          "analyzer": "lower_analyzer"
+        },
+        "cuid": {
+          "type": "text"
+        },
+        "pmid": {
+          "type": "text"
+        },
+        "refunifids": {
+          "type": "long"
+        },
+        "allrefids": {
+          "type": "long"
+        },
+        "daisids": {
+          "type": "integer",
+          "fields": {
+            "daisidsnavigator": {
+              "type": "integer",
+              "doc_values": true
+            }
+          }
+        },
+        "editor": {
+          "type": "text",
+          "fields": {
+            "editornavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "assignee": {
+          "type": "text",
+          "fields": {
+            "assigneenavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "literaturetype": {
+          "type": "text",
+          "fields": {
+            "literaturetypenavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "concept": {
+          "type": "text",
+          "fields": {
+            "conceptnavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "mconcept": {
+          "type": "text",
+          "fields": {
+            "mconceptnavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "supertaxa": {
+          "type": "text",
+          "fields": {
+            "supertaxanavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "taxonomic": {
+          "type": "text"
+        },
+        "organisms": {
+          "type": "text"
+        },
+        "genename": {
+          "type": "text"
+        },
+        "chemical": {
+          "type": "text"
+        },
+        "chembio": {
+          "type": "text"
+        },
+        "idcodes": {
+          "type": "text",
+          "fields": {
+            "idcodesnavigator": {
+              "type": "keyword",
+              "index": true
+            }
+          }
+        },
+        "disease": {
+          "type": "text"
+        },
+        "sequence": {
+          "type": "text"
+        },
+        "seqcasreg": {
+          "type": "text"
+        },
+        "partsstructure": {
+          "type": "text"
+        },
+        "methodsequipment": {
+          "type": "text"
+        },
+        "geographic": {
+          "type": "text",
+          "fields": {
+            "geographicnavigator": {
+              "type": "keyword",
+              "index": true
+            }
+          }
+        },
+        "geologictime": {
+          "type": "text"
+        },
+        "miscdesc": {
+          "type": "text"
+        },
+        "ifactor": {
+          "type": "float",
+          "doc_values": true
+        },
+        "toppaper": {
+          "type": "text",
+          "index": false,
+          "fields": {
+            "toppapernavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "oasjournal": {
+          "type": "text",
+          "index": false,
+          "fields": {
+            "oasjournalnavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true,
+              "null_value": "No"
+            }
+          }
+        },
+        "oasfilter": {
+          "index": false,
+          "type": "text",
+          "fields": {
+            "oasfilternavigator": {
+              "index": true,
+              "type": "keyword"
+            }
+          }
+        },
+        "esicategory": {
+          "type": "text",
+          "analyzer": "lower_analyzer"
+        },
+        "organismadvanced": {
+          "type": "text"
+        },
+        "generic1": {
+          "type": "text",
+          "fields": {
+            "generic1navigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "generic2": {
+          "type": "text",
+          "analyzer": "lower_analyzer"
+        },
+        "fuidxml": {
+          "type": "text",
+          "index": false
+        },
+        "compositexml": {
+          "type": "text",
+          "index": false
+        },
+        "siloxml": {
+          "type": "text",
+          "index": false
+        },
+        "fullmetaxml": {
+          "type": "text",
+          "index": false
+        },
+        "itemxml": {
+          "type": "text",
+          "index": false
+        },
+        "contributorsxml": {
+          "type": "text",
+          "index": false
+        },
+        "datasetlinksxml": {
+          "type": "text",
+          "index": false
+        },
+        "citationxml": {
+          "type": "text",
+          "index": false
+        },
+        "icrelatedxml": {
+          "type": "text",
+          "index": false
+        },
+        "identifiersxml": {
+          "type": "text",
+          "index": false
+        },
+        "datesxml": {
+          "type": "text",
+          "index": false
+        },
+        "addressxml": {
+          "type": "text",
+          "index": false
+        },
+        "umrelatedxml": {
+          "type": "text",
+          "index": false
+        },
+        "clusteredids": {
+          "type": "text",
+          "index": false
+        },
+        "titlear": {
+          "type": "text",
+          "analyzer": "ar_std_lem"
+        },
+        "abstractar": {
+          "type": "text",
+          "analyzer": "ar_std_lem"
+        },
+        "keywordsar": {
+          "type": "text",
+          "analyzer": "ar_std_lem"
+        },
+        "sourcear": {
+          "type": "text",
+          "analyzer": "ar_std",
+          "fields": {
+            "sourcearnavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "sourcearsort": {
+          "type": "icu_collation_keyword",
+          "rules": "[reorder Arab digit Latn Grek Cyrl Hani Hang Kana Hebr]"
+        },
+        "authorsarsort": {
+          "type": "icu_collation_keyword",
+          "rules": "[reorder Arab digit Latn Grek Cyrl Hani Hang Kana Hebr]"
+        },
+        "authorsar": {
+          "type": "text",
+          "analyzer": "ar_std",
+          "fields": {
+            "authorsarnavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "addressar": {
+          "type": "text",
+          "analyzer": "ar_std"
+        },
+        "institutionar": {
+          "type": "text",
+          "analyzer": "ar_std",
+          "fields": {
+            "institutionarnavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "streetar": {
+          "type": "text",
+          "analyzer": "ar_std"
+        },
+        "cityar": {
+          "type": "text",
+          "analyzer": "ar_std"
+        },
+        "statear": {
+          "type": "text",
+          "analyzer": "ar_std"
+        },
+        "countryar": {
+          "type": "text",
+          "analyzer": "ar_std",
+          "fields": {
+            "countryarnavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        },
+        "dsindicator": {
+          "type": "text",
+          "fields": {
+            "dsindicatornavigator": {
+              "type": "keyword",
+              "index": true,
+              "doc_values": true
+            }
+          }
+        }
+      }
+    }
+  }
+}
