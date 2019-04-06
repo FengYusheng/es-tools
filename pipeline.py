@@ -24,7 +24,7 @@ def read_token_templete():
     return record
 
 
-def collect_analyzer_results(csv_file, analyzer=None):
+def collect_analyzer_results(csv_file, analyzer):
     records = []
     token_templete = read_token_templete()
     with open(csv_file, 'r') as csv_file:
@@ -41,18 +41,34 @@ def collect_analyzer_results(csv_file, analyzer=None):
                 token['token'] = row['﻿Original']
 
             token['terms'].append(row['Inflection'])
-            analyzer and token[analyzer].append(row[analyzer])
+            token[analyzer].append(row[analyzer])
 
     token[analyzer] = Counter(token[analyzer])
     records.append(token)
     return records
 
 
+def add_new_analyzer_results(records, csv_file, analyzer):
+    token = read_token_templete()
+    with open(csv_file, 'r') as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        for row in csv_reader:
+            if row['﻿Original'] != token['token']:
+                if len(token[analyzer]):
+                    token[analyzer] = Counter(token[analyzer])
+                for t in records:
+                    if t['token'] == row['﻿Original']:
+                        token = t
+                        break
+            token[analyzer].append(row['elasticsearch'])
+
+    token[analyzer] = Counter(token[analyzer])
+    return records
+
+
 def save_report(report_name, records):
     with open(report_name, 'w') as report:
         json.dump(records, report, ensure_ascii=False, indent=4)
-
-
 
 
 def run(csv_file, analyzer=None):
@@ -71,5 +87,6 @@ __all__ = [
     'run',
     'read_token_templete',
     'collect_analyzer_results',
+    'add_new_analyzer_results',
     'save_report'
 ]

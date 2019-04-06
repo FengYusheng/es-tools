@@ -16,7 +16,7 @@ class TestPipeline(unittest.TestCase):
         self.assertIn('token', record)
         self.assertIn('terms', record)
         self.assertIn('msarhan', record)
-        self.assertIn('es', record)
+        self.assertIn('elasticsearch', record)
         self.assertIn('rosette', record)
         self.assertIn('root', record)
         self.assertIn('lemma', record)
@@ -30,6 +30,17 @@ class TestPipeline(unittest.TestCase):
         self.assertIn('منع', records[2]['msarhan'])
 
 
+    def test_add_a_new_analyzer_report_to_records(self):
+        records = collect_analyzer_results('./data/regular_verbs_msarhan_report.csv', 'msarhan')
+        records = add_new_analyzer_results(records, './data/regular_verbs_elasticsearch_report.csv', 'elasticsearch')
+        self.assertEqual(len(records), 22)
+        self.assertEqual(records[-1]['token'], 'نتج')
+        self.assertEqual(records[0]['token'], 'نقل')
+        self.assertIn('امنع', records[2]['elasticsearch'])
+        save_report('./report_repo/regular_verbs.json', records)
+
+
+    @unittest.skip('Skip save.')
     def test_save_report(self):
         records = collect_analyzer_results('./data/regular_verbs_msarhan_report.csv', 'msarhan')
         save_report('./report_repo/regular_verbs_msarhan_report.json', records)

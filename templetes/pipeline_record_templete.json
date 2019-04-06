@@ -2,7 +2,7 @@
     "token" : "{TOKEN}",
     "terms" : [],
     "msarhan" : [],
-    "es" : [],
+    "elasticsearch" : [],
     "rosette" : [],
     "root" : "{ROOT}",
     "lemma" : "{LEMMA}"
