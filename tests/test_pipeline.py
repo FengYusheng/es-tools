@@ -47,6 +47,10 @@ class TestPipeline(unittest.TestCase):
         generate_accuracy_csv('./report_repo/regular_verbs.csv', records)
 
 
+    def test_gernerate_vowel_list(self):
+        generate_vowels_list('./data/letters_with_punctuation.csv')
+
+
     @unittest.skip('Skip save.')
     def test_save_report(self):
         records = collect_analyzer_results('./data/regular_verbs_msarhan_report.csv', 'msarhan')

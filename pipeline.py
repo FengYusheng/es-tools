@@ -98,6 +98,20 @@ def generate_accuracy_csv(report_name, records):
                 })
 
 
+def generate_vowels_list(csv_file):
+    with open(csv_file, 'r') as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        vowels = [row['vowel'].strip() for row in csv_reader]
+        # print(len(vowels))
+        vowels = [''.join(vowels)]
+        # print(len(vowels[0]))
+
+    with open('./templetes/folding_parameter.json', 'w') as f:
+        json.dump({
+            'unicodeSetFilter' : vowels
+        }, f, ensure_ascii=False)
+
+
 def run(csv_file, analyzer=None):
     csv_file = os.path.realpath(os.path.abspath(os.path.expandvars(os.path.expanduser(csv_file))))
     if not os.access(csv_file, os.F_OK|os.R_OK):
@@ -116,5 +130,6 @@ __all__ = [
     'collect_analyzer_results',
     'add_new_analyzer_results',
     'generate_accuracy_csv',
+    'generate_vowels_list',
     'save_report'
 ]
