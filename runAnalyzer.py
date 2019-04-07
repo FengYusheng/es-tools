@@ -7,6 +7,8 @@ import csv
 import sys
 import os
 
+from callRosette import build_word_list_from_a_csv, build_expection_list_from_a_csv
+
 diff = count = succ = 0
 
 def handle_msarhan_response(response, original, inflection, report_writer=None):
@@ -38,6 +40,25 @@ def handle_elasticsearch_response(analyzer, response, original, inflection, repo
 
     count += 1
     succ = succ + 1 if original in results else succ
+
+
+def handle_word_list_elasticsearch_response(analyzer, response, expection_list, inflection_list, report_writer=None):
+    global count, succ
+    print(len(response['tokens']), len(expection_list), len(inflection_list))
+    if not int(len(response['tokens'])/2) \
+    == len(expection_list) \
+    == len(inflection_list):
+        raise TypeError('Data format error.')
+
+    term_count = len(inflection_list)
+    tokens = handle_response(analyzer, response)
+    for i in range(term_count):
+        is_same = expection_list[i] == inflection_list[i]
+        print({'Original': expection_list[i], 'Inflection' : inflection_list[i], analyzer+'_word_list' : tokens[i]['token'], 'is_same' : is_same})
+        report_writer and report_writer.writerow({'Original':expection_list[i], 'Inflection':inflection_list[i], analyzer+'_word_list':tokens[i]['token'], 'is_same':is_same})
+
+        count += 1
+        succ = succ + 1 if is_same else succ
 
 
 def handle_rosette_response(response, original, inflection, report_writer=None):
@@ -197,13 +218,24 @@ def process_inflection_in_a_csv_file(csv_file, analyzer='msarhan'):
             print('Count: {0} Succ: {1}'.format(count, succ))
 
 
-def process_word_list_in_a_csv_file(csv_file, analyzer='msarhan'):
+def process_word_list_in_a_csv_file(csv_file, analyzer='rbl_ara_folding'):
+    global count, succ
+    count = succ = 0
     csv_file = os.path.realpath(os.path.abspath(os.path.expandvars(os.path.expanduser(csv_file))))
     if not os.access(csv_file, os.F_OK|os.R_OK):
         raise  OSError("The file {0} doesn't exist or you have no read permission.".format(csv_file))
 
-    csv_report = csv_file.rpartition('.')[0] + '_{0}_report'.format(analyzer) + '.csv'
-    
+    csv_report = csv_file.rpartition('.')[0] + '_{0}_word_list_report'.format(analyzer) + '.csv'
+    inflection_list = build_word_list_from_a_csv(csv_file)
+    expection_list = build_expection_list_from_a_csv(csv_file)
+    with open(csv_report, 'w') as csv_report:
+        report_writer = csv.DictWriter(csv_report, fieldnames=['Original', 'Inflection', analyzer+'_word_list', 'is_same'])
+        report_writer.writeheader()
+        response = send_request_to_elasticsearch(' '.join(expection_list), ' '.join(inflection_list), 'rbl_ara_folding')
+        handle_word_list_elasticsearch_response(analyzer, response, expection_list, inflection_list, report_writer)
+
+    print('Count: {0} Succ: {1}'.format(count, succ))
+
 
 
 
@@ -213,6 +245,7 @@ __all__ = [
     'send_request',
     'handle_response',
     'process_inflection_in_a_csv_file',
+    'process_word_list_in_a_csv_file',
     'send_request_to_msarhan',
     'handle_msarhan_response',
     'send_request_to_rosette'

@@ -38,8 +38,8 @@ class TestElastisearch(unittest.TestCase):
         process_inflection_in_a_csv_file('./data/derivation.csv', analyzer='elasticsearch')
 
 
-    def test_ft_rbl_ara(self):
-        process_inflection_in_a_csv_file('./data/regular_verbs.csv', analyzer='rbl_ara')
+    def test_word_list(self):
+        process_word_list_in_a_csv_file('./data/regular_verbs.csv', analyzer='rbl_ara_folding')
 
 
 if __name__ == '__main__':
