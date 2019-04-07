@@ -157,6 +157,30 @@
             "lowercase"
           ]
       },
+      "ar_std_lem_folding1": {
+          "tokenizer": "whitespace",
+          "position_increment_gap": 512,
+          "char_filter": [
+            "to_spaces"
+          ],
+          "filter": [
+            "ar_folding",
+            "lowercase",
+            "arabic_stemmer"
+          ]
+      },
+      "ar_std_lem_folding2": {
+          "tokenizer": "whitespace",
+          "position_increment_gap": 512,
+          "char_filter": [
+            "to_spaces"
+          ],
+          "filter": [
+            "lowercase",
+            "arabic_stemmer",
+            "ar_folding"
+          ]
+      },
       "ar_std_folding": {
           "tokenizer": "whitespace",
           "position_increment_gap": 512,
