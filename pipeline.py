@@ -31,15 +31,15 @@ def collect_analyzer_results(csv_file, analyzer):
     with open(csv_file, 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         # print(repr('Original'))
-        # print(repr('﻿Original'))
+        # print(repr('Original'))
         token = copy(token_templete)
         for row in csv_reader:
-            if row['﻿Original'] != token['token']:
+            if row['Original'] != token['token']:
                 if analyzer and len(token[analyzer]):
                     token[analyzer+'_count'] = Counter(token[analyzer])
                     records.append(token)
                 token = copy(token_templete)
-                token['token'] = row['﻿Original']
+                token['token'] = row['Original']
 
             token['terms'].append(row['Inflection'])
             token[analyzer].append(row[analyzer])
@@ -54,11 +54,11 @@ def add_new_analyzer_results(records, csv_file, analyzer):
     with open(csv_file, 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         for row in csv_reader:
-            if row['﻿Original'] != token['token']:
+            if row['Original'] != token['token']:
                 if len(token[analyzer]):
                     token[analyzer+'_count'] = Counter(token[analyzer])
                 for t in records:
-                    if t['token'] == row['﻿Original']:
+                    if t['token'] == row['Original']:
                         token = t
                         break
             token[analyzer].append(row[analyzer])
@@ -74,27 +74,39 @@ def save_report(report_name, records):
 
 def generate_accuracy_csv(report_name, records):
     with open(report_name, 'w') as report:
-        csv_writer = csv.DictWriter(report, fieldnames=['token', 'term', 'msarhan', 'msarhan_accuracy', 'elasticsearch', 'es_accuracy', 'rosette', 'rosette_accuracy'])
+        csv_writer = csv.DictWriter(report, fieldnames=[
+            'token', 'term', 'msarhan', 'msarhan_accuracy', 'rbl_ara', 'rbl_ara_accuracy', 'rbl_ara_folding', 'rbl_ara_folding_accuracy', 'ar_std_lem_folding1', 'ar_std_lem_folding1_accuracy', 'ar_std_lem_folding2', 'ar_std_lem_folding2_accuracy'
+            ])
         csv_writer.writeheader()
+
         for token in records:
-            if not len(token['terms']) == len(token['msarhan']) == len(token['elasticsearch']):
+            if not len(token['terms']) \
+            == len(token['msarhan']) \
+            == len(token['rbl_ara']) \
+            == len(token['rbl_ara_folding']) \
+            == len(token['ar_std_lem_folding1']) \
+            == len(token['ar_std_lem_folding2']):
                 raise TypeError('Data format error.')
 
-            token_, terms_, msarhan_, es_, rosette_ =  token['token'], token['terms'], token['msarhan'], token['elasticsearch'], token['rosette']
-            msarhan_count, es_count, rosette_count = token['msarhan_count'], token['elasticsearch_count'], token['rosette_count']
+            token_, terms_, msarhan_, rbl_ara_, rbl_ara_folding_, ar_std_lem_folding1_, ar_std_lem_folding2_ =  token['token'], token['terms'], token['msarhan'], token['rbl_ara'], token['rbl_ara_folding'], token['ar_std_lem_folding1'], token['ar_std_lem_folding2']
+
+            msarhan_count, rbl_ara_count, rbl_ara_folding_count, ar_std_lem_folding1_count, ar_std_lem_folding2_count = token['msarhan_count'], token['rbl_ara_count'], token['rbl_ara_folding_count'], token['ar_std_lem_folding1_count'], token['ar_std_lem_folding2_count']
+
             term_count = len(terms_)
             for i in range(term_count):
-                # print(g_accuracy_format.format(msarhan_count[msarhan_[i]]*100/term_count))
-                # print(g_accuracy_format.format(es_count[es_[i]]*100/term_count))
                 csv_writer.writerow({
                     'token' : token_,
                     'term' : terms_[i],
                     'msarhan' : msarhan_[i],
                     'msarhan_accuracy' : g_accuracy_format.format(msarhan_count[msarhan_[i]]*100/term_count),
-                    'elasticsearch' : es_[i],
-                    'es_accuracy' : g_accuracy_format.format(es_count[es_[i]]*100/term_count),
-                    'rosette' : rosette_[i],
-                    'rosette_accuracy' : g_accuracy_format.format(rosette_count[rosette_[i]]*100/term_count)
+                    'rbl_ara' : rbl_ara_[i],
+                    'rbl_ara_accuracy' : g_accuracy_format.format(rbl_ara_count[rbl_ara_[i]]*100/term_count),
+                    'rbl_ara_folding' : rbl_ara_folding_[i],
+                    'rbl_ara_folding_accuracy' : g_accuracy_format.format(rbl_ara_folding_count[rbl_ara_folding_[i]]*100/term_count),
+                    'ar_std_lem_folding1' : ar_std_lem_folding1_[i],
+                    'ar_std_lem_folding1_accuracy' : g_accuracy_format.format(ar_std_lem_folding1_count[ar_std_lem_folding1_[i]]*100/term_count),
+                    'ar_std_lem_folding2' : ar_std_lem_folding2_[i],
+                    'ar_std_lem_folding2_accuracy' : g_accuracy_format.format(ar_std_lem_folding2_count[ar_std_lem_folding2_[i]]*100/term_count)
                 })
 
 
@@ -102,9 +114,7 @@ def generate_vowels_list(csv_file):
     with open(csv_file, 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         vowels = [row['vowel'].strip() for row in csv_reader]
-        # print(len(vowels))
         vowels = [''.join(vowels)]
-        # print(len(vowels[0]))
 
     with open('./templetes/folding_parameter.json', 'w') as f:
         json.dump({

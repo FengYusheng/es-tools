@@ -48,6 +48,7 @@ def send_request_to_rosette(word_list=None):
     return respone
 
 
+
 def handle_rosette_morphology_lemma_response(csv_report, response, expection_list, inflection_list):
     count = succ = 0
     with open(csv_report, 'w') as csv_report:

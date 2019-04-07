@@ -2,8 +2,10 @@
     "token" : "{TOKEN}",
     "terms" : [],
     "msarhan" : [],
-    "elasticsearch" : [],
-    "rosette" : [],
+    "rbl_ara" : [],
+    "rbl_ara_folding" : [],
+    "ar_std_lem_folding1" : [],
+    "ar_std_lem_folding2" : [],
     "root" : "{ROOT}",
     "lemma" : "{LEMMA}"
 }

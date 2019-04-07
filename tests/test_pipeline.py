@@ -6,11 +6,13 @@ from pipeline import *
 
 
 class TestPipeline(unittest.TestCase):
+    @unittest.skip('Skip save.')
     def test_access_an_nonexistent_csv(self):
         with self.assertRaises(OSError):
             run('./data/nonexistent.csv')
 
 
+    @unittest.skip('Skip save.')
     def test_read_record_templete_from_a_json_file(self):
         record = read_token_templete()
         self.assertIn('token', record)
@@ -22,6 +24,7 @@ class TestPipeline(unittest.TestCase):
         self.assertIn('lemma', record)
 
 
+    @unittest.skip('Skip save.')
     def test_collect_analzyer_results(self):
         records = collect_analyzer_results('./data/regular_verbs_msarhan_report.csv', 'msarhan')
         self.assertEqual(len(records), 22)
@@ -30,6 +33,7 @@ class TestPipeline(unittest.TestCase):
         self.assertIn('منع', records[2]['msarhan'])
 
 
+    @unittest.skip('Skip save.')
     def test_add_a_new_analyzer_report_to_records(self):
         records = collect_analyzer_results('./data/regular_verbs_msarhan_report.csv', 'msarhan')
         records = add_new_analyzer_results(records, './data/regular_verbs_elasticsearch_report.csv', 'elasticsearch')
@@ -40,13 +44,15 @@ class TestPipeline(unittest.TestCase):
         save_report('./report_repo/regular_verbs.json', records)
 
 
-    def test_gernerate_accuracy_csv(self):
+    # @unittest.skip('Skip save.')
+    def test_generate_accuracy_csv(self):
         records = collect_analyzer_results('./data/regular_verbs_msarhan_report.csv', 'msarhan')
         records = add_new_analyzer_results(records, './data/regular_verbs_elasticsearch_report.csv', 'elasticsearch')
         records = add_new_analyzer_results(records, './data/regular_verbs_rosette_lemma_report.csv', 'rosette')
         generate_accuracy_csv('./report_repo/regular_verbs.csv', records)
 
 
+    @unittest.skip('Skip save.')
     def test_gernerate_vowel_list(self):
         generate_vowels_list('./data/letters_with_punctuation.csv')
 

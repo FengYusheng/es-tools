@@ -24,7 +24,7 @@ class TestElastisearch(unittest.TestCase):
         process_inflection_in_a_csv_file('./data/nouns.csv', analyzer='elasticsearch')
 
 
-    # @unittest.skip("Skip punctuation for now")
+    @unittest.skip("Skip punctuation for now")
     def test_punctuation_with_elasticsearch(self):
         process_inflection_in_a_csv_file('./data/punctuation.csv', analyzer='elasticsearch')
 
@@ -36,6 +36,10 @@ class TestElastisearch(unittest.TestCase):
     @unittest.skip("Skip derivatiion for now.")
     def test_derivation_with_elasticsearch(self):
         process_inflection_in_a_csv_file('./data/derivation.csv', analyzer='elasticsearch')
+
+
+    def test_ft_rbl_ara(self):
+        process_inflection_in_a_csv_file('./data/regular_verbs.csv', analyzer='rbl_ara')
 
 
 if __name__ == '__main__':
