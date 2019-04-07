@@ -2,7 +2,6 @@ __pycache__/
 runAnalyzer.pyc
 *analyzer.json
 samples/
-data
 report/
 runAnalyzer.pyc
 pem.tgz

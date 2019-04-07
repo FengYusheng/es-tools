@@ -1,0 +1,15 @@
+Original,Inflection,msarhan,is_same
+غير,غير,غور,False
+الله,الله,له,False
+صراط,صراط,صرط,False
+رب,رب,ربب,False
+يوم,يوم,يوم,True
+إسم, إِسم,سمي,False
+ذهب,ذهب,ذهب,True
+غير, غَيْرِ,غور,False
+الله,الله,له,False
+صراط, صِرَاطَ ,صرط,False
+رب, رَبِّ ,ربب,False
+يوم, يَوْمِ ,يوم,True
+إسم,إسم,سمي,False
+ذهب, ذَهْب,ذهب,True
