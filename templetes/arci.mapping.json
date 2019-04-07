@@ -206,6 +206,18 @@
               "rbl_ara_stopwords",
               "ar_folding"
           ]
+      },
+      "ara_hunspell": {
+          "tokenizer": "whitespace",
+          "position_increment_gap": 512,
+          "char_filter": [
+            "to_spaces"
+          ],
+          "filter": [
+            "lowercase",
+            "ar_hunspell",
+            "ar_folding"
+          ]
       }
       },
       "tokenizer": {
@@ -250,6 +262,11 @@
         "rbl_ara_stopwords" : {
             "type": "stop",
             "stopwords" : "_arabic_"
+        },
+        "ar_hunspell" : {
+            "type": "hunspell",
+            "locale": "ar_AR",
+            "longest_only": true
         },
         "russian_folding": {
           "type": "icu_folding",

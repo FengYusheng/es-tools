@@ -7,6 +7,7 @@
     "rbl_ara_folding_word_list" : [],
     "ar_std_lem_folding1" : [],
     "ar_std_lem_folding2" : [],
+    "ara_hunspell" : [],
     "root" : "{ROOT}",
     "lemma" : "{LEMMA}"
 }
