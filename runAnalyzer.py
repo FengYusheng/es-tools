@@ -138,18 +138,6 @@ def send_request(request):
     return json.loads(response, encoding='utf-8')
 
 
-def read_text(csv_file):
-    csv_file = os.path.realpath(os.path.abspath(os.path.expandvars(os.path.expanduser(csv_file))))
-    if not os.access(csv_file, os.F_OK|os.R_OK):
-        raise OSError("The file {0} doesn't exist or you have no read permission.".format(csv_file))
-
-    # TODO: Read data from a csv
-    with open(csv_file, 'r') as f:
-        pass
-
-    return data
-
-
 
 def send_request_to_msarhan(root, inflection):
     completed_process = subprocess.run(
@@ -196,24 +184,9 @@ def process_inflection_in_a_csv_file(csv_file, analyzer='msarhan'):
                 if analyzer == 'msarhan':
                     response = send_request_to_msarhan(row['﻿Original'], row['Inflection'])
                     handle_msarhan_response(response, row['﻿Original'], row['Inflection'], report_writer)
-                elif analyzer == 'elasticsearch':
-                    response = send_request_to_elasticsearch(row['﻿Original'], row['Inflection'])
-                    handle_elasticsearch_response('ar_std_lem', response, row['﻿Original'], row['Inflection'], report_writer)
-                elif analyzer == 'rosette':
-                    response = send_request_to_rosette(row['﻿Original'], row['Inflection'])
-                    handle_rosette_response(response, row['﻿Original'], row['Inflection'], report_writer)
-                elif analyzer == 'rbl_ara':
-                    response = send_request_to_elasticsearch(row['﻿Original'], row['Inflection'], 'rbl_ara')
-                    handle_elasticsearch_response('rbl_ara', response, row['﻿Original'], row['Inflection'], report_writer)
-                elif analyzer == 'rbl_ara_folding':
-                    response = send_request_to_elasticsearch(row['﻿Original'], row['Inflection'], 'rbl_ara_folding')
-                    handle_elasticsearch_response('rbl_ara_folding', response, row['﻿Original'], row['Inflection'], report_writer)
-                elif  analyzer == 'ar_std_lem_folding1':
-                    response = send_request_to_elasticsearch(row['﻿Original'], row['Inflection'], 'ar_std_lem_folding1')
-                    handle_elasticsearch_response('ar_std_lem_folding1', response, row['﻿Original'], row['Inflection'], report_writer)
-                elif analyzer == 'ar_std_lem_folding2':
-                    response = send_request_to_elasticsearch(row['﻿Original'], row['Inflection'], 'ar_std_lem_folding2')
-                    handle_elasticsearch_response('ar_std_lem_folding2', response, row['﻿Original'], row['Inflection'], report_writer)
+                else:
+                    response = send_request_to_elasticsearch(row['﻿Original'], row['Inflection'], analyzer)
+                    handle_elasticsearch_response(analyzer, response, row['﻿Original'], row['Inflection'], report_writer)
 
             print('Count: {0} Succ: {1}'.format(count, succ))
 
@@ -235,7 +208,6 @@ def process_word_list_in_a_csv_file(csv_file, analyzer='rbl_ara_folding'):
         handle_word_list_elasticsearch_response(analyzer, response, expection_list, inflection_list, report_writer)
 
     print('Count: {0} Succ: {1}'.format(count, succ))
-
 
 
 
