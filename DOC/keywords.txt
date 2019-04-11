@@ -1,9 +1,0 @@
-1. Term ==> word
-Song
-The Song of "Ice and Fire"
-2. Token
-
-3. Algorithm
-
-4. suppletive?
-> irregular word transformation/infleciton
