@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from runAnalyzer import *
+from options import *
 
 
 class TestCommandLines(unittest.TestCase):

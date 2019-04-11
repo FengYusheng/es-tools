@@ -8,6 +8,7 @@ import sys
 import os
 
 from callRosette import build_word_list_from_a_csv, build_expection_list_from_a_csv
+from options import optParser
 
 diff = count = succ = 0
 
@@ -78,26 +79,6 @@ def handle_rosette_response(response, original, inflection, report_writer=None):
 
     count += 1
     succ = succ + 1 if is_same else succ
-
-
-def optParser(args=[]):
-    kwargs = {
-        "prog" : "runAnalyzer",
-        "description" : '''Call ES Analyzer API''',
-        "formatter_class" : argparse.RawDescriptionHelpFormatter,
-        "argument_default" : argparse.SUPPRESS,
-        "conflict_handler" : "error"
-    }
-
-    parser = argparse.ArgumentParser(**kwargs)
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s 0.1')
-    parser.add_argument('-s', '--server', action='store', type=str, required=False, default='localhost', help='the address of your elasticesearch server.', dest='server', metavar='Server')
-    parser.add_argument('-p', '--port', action='store', type=str, required=False, default='9220', help='the port number which your elasticsearch is listening on', dest='port', metavar='Port')
-    parser.add_argument('-i', '--index', action='store', type=str, required=False, default=None, help='the index which you want handle', dest='index', metavar='Index')
-    parser.add_argument('-a', '--analyzer', action='store', type=str, required=False, default=None, help='the analyzer which you want to call', dest='analyzer', metavar='Analyzer')
-
-    options = parser.parse_args(args=args)
-    return vars(options)
 
 
 def build_request(options, method='POST', text='returnning'):
@@ -212,7 +193,6 @@ def process_word_list_in_a_csv_file(csv_file, analyzer='rbl_ara_folding'):
 
 
 __all__ = [
-    'optParser',
     'build_request',
     'send_request',
     'handle_response',
