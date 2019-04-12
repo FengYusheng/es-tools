@@ -47,9 +47,8 @@ class TestCommandLines(unittest.TestCase):
         self.assertEqual(options['analyzer'], 'ar_std')
 
 
-    # def test_build_query(self):
-    #     options = optParser(['-p', '9220', '-s', 'localhost', '-i', 'arci-test', '-a', 'ar_std_lem'])
-    #     print(options)
+    def test_read_options_from_a_json_file(self):
+        self.fail('read options from a json file')
 
 
 
