@@ -1,6 +1,7 @@
 {
-    "server" : "localhost",
-    "port" : "9220",
-    "index" : "arci-test",
-    "analzyer" : "ar_std_lem"
+    "server": "localhost",
+    "port": "9220",
+    "index": "arci-test",
+    "analzyer": "ar_std_lem",
+    "data": []
 }

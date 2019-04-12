@@ -42,13 +42,19 @@ class TestCommandLines(unittest.TestCase):
 
     def test_raise_an_expection_if_no_file_supplied(self):
         with self.assertRaises(TypeError):
-            readConf(optParser())
+            handleConf(optParser())
 
 
     def test_read_options_from_a_nonexistent_json_file(self):
         options = optParser(['-c', './templetes/nonexistent.json'])
         with self.assertRaises(PermissionError):
-            readConf(options)
+            handleConf(options)
+
+
+    def test_raise_exception_if_config_file_format_is_incorrect(self):
+        options = optParser(['-c', './templetes/configure.json'])
+        config = handleConf(options)
+        print(config)
 
 
 
