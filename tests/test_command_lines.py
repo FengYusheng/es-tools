@@ -47,7 +47,8 @@ class TestCommandLines(unittest.TestCase):
 
     def test_read_options_from_a_nonexistent_json_file(self):
         options = optParser(['-c', './templetes/nonexistent.json'])
-        self.fail('read a nonexistent json file')
+        with self.assertRaises(PermissionError):
+            readConf(options)
 
 
 

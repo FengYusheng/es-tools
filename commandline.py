@@ -12,6 +12,11 @@ def readConf(opts):
     if 'config-file' not in opts:
         raise TypeError("No config file is supplied from command line.")
 
+    config_file = os.path.realpath(os.path.abspath(os.path.expandvars(os.path.expanduser(opts['config-file']))))
+
+    if not os.access(config_file, os.F_OK|os.R_OK):
+        raise PermissionError("The file {0} doesn't exist or you have no read permission.".format(config_file))
+
 
 def optParser(args=[]):
     kwargs = {
