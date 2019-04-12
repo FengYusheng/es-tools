@@ -54,7 +54,7 @@ class TestCommandLines(unittest.TestCase):
     def test_raise_exception_if_config_file_format_is_incorrect(self):
         options = optParser(['-c', './templetes/configure.json'])
         config = handleConf(options)
-        print(config)
+        
 
 
 
