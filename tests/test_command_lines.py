@@ -1,17 +1,10 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from options import *
+from commandline import *
 
 
 class TestCommandLines(unittest.TestCase):
-    def test_default_options(self):
-        options = optParser()
-        self.assertEqual(options['server'], 'localhost')
-        self.assertEqual(options['port'], '9220')
-        self.assertIsNone(options['index'])
-
-
     def test_server_option(self):
         options = optParser(['-s', '192.168.0.1'])
         self.assertEqual(options['server'], '192.168.0.1')
@@ -47,8 +40,14 @@ class TestCommandLines(unittest.TestCase):
         self.assertEqual(options['analyzer'], 'ar_std')
 
 
-    def test_read_options_from_a_json_file(self):
-        self.fail('read options from a json file')
+    def test_raise_an_expection_if_no_file_supplied(self):
+        with self.assertRaises(TypeError):
+            readConf(optParser())
+
+
+    def test_read_options_from_a_nonexistent_json_file(self):
+        options = optParser(['-c', './templetes/nonexistent.json'])
+        self.fail('read a nonexistent json file')
 
 
 

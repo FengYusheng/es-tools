@@ -8,7 +8,7 @@ import sys
 import os
 
 from callRosette import build_word_list_from_a_csv, build_expection_list_from_a_csv
-from options import optParser
+from commandline import optParser
 
 diff = count = succ = 0
 
