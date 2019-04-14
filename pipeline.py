@@ -86,7 +86,7 @@ def generate_accuracy_csv(report_name, records):
             == len(token['rbl_ara_folding']) \
             == len(token['ar_std_lem_folding1']) \
             == len(token['ar_std_lem_folding2']):
-                raise TypeError('Data format error.')
+                raise TypeError('Data format error about "{0}".'.format(token['token']))
 
             token_, terms_, msarhan_, rbl_ara_, rbl_ara_folding_, ar_std_lem_folding1_, ar_std_lem_folding2_ =  token['token'], token['terms'], token['msarhan'], token['rbl_ara'], token['rbl_ara_folding'], token['ar_std_lem_folding1'], token['ar_std_lem_folding2']
 
