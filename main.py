@@ -112,7 +112,7 @@ def run():
     nouns()
     numerals()
     derivation()
-    derivation_for_inaccuracy()
+    # derivation_for_inaccuracy()
 
 
 

@@ -207,7 +207,7 @@
               "ar_folding"
           ]
       },
-      "ara_hunspell_thunderbird": {
+      "ara_hunspell": {
           "tokenizer": "whitespace",
           "position_increment_gap": 512,
           "char_filter": [
@@ -215,7 +215,8 @@
           ],
           "filter": [
             "lowercase",
-            "ar_hunspell"
+            "ar_hunspell",
+            "ar_folding"
           ]
       }
       },

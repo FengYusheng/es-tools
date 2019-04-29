@@ -25,7 +25,8 @@ def handle_msarhan_response(response, original, inflection, report_writer=None):
 
 def handle_response(analyzer, response):
     if 'tokens' in response:
-        return [t['token'] for t in response['tokens'] if t['type'] == '<LEMMA>'] if 'rbl_ara' in analyzer else [t['token'] for t in response['tokens']]
+        tokens_ = [t['token'] for t in response['tokens'] if t['type'] == '<LEMMA>'] if 'rbl_ara' in analyzer else [t['token'] for t in response['tokens']]
+        return sorted(tokens_)
     else:
         print(response)
         raise(TypeError('Error response'))
@@ -136,7 +137,7 @@ def send_request_to_msarhan(root, inflection):
 
 
 def send_request_to_elasticsearch(root, inflection, analyzer='ar_std_lem'):
-    options = optParser(['-p', '9400', '-s', 'localhost', '-i', 'arci-test', '-a', analyzer])
+    options = optParser(['-p', '9200', '-s', 'localhost', '-i', 'arci-test', '-a', analyzer])
     request = build_request(options, text=inflection)
     response = send_request(request)
     return response

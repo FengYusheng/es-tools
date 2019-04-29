@@ -49,6 +49,10 @@ def collect_analyzer_results(csv_file, analyzer):
     return records
 
 
+def collect_hunspell_results(csv_file, analyzer='ara_hunspell'):
+    pass
+
+
 def add_new_analyzer_results(records, csv_file, analyzer):
     token = read_token_templete()
     with open(csv_file, 'r') as csv_file:
