@@ -7,3 +7,4 @@ runAnalyzer.pyc
 pem.tgz
 report_repo/
 data/
+*.gz
