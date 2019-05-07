@@ -276,7 +276,7 @@
         },
         "ar_hunspell" : {
             "type": "hunspell",
-            "locale": "thunderbird_AR"
+            "locale": "ahmed_dic_AR"
         },
         "en_hunspell_filter" : {
             "type": "hunspell",
