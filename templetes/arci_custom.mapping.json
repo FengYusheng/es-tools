@@ -192,6 +192,17 @@
             "lowercase"
           ]
       },
+      "ar_std_icu_folding": {
+          "tokenizer": "whitespace",
+          "position_increment_gap": 512,
+          "char_filter": [
+            "to_spaces"
+          ],
+          "filter": [
+            "icu_folding",
+            "lowercase"
+          ]
+      },
       "rbl_ara": {
           "type": "rbl",
           "language" : "ara",
@@ -203,8 +214,7 @@
           "filter": [
               "rbl_ara_filter",
               "lowercase",
-              "rbl_ara_stopwords",
-              "ar_folding"
+              "rbl_ara_stopwords"
           ]
       },
       "ara_hunspell": {
@@ -215,8 +225,17 @@
           ],
           "filter": [
             "lowercase",
-            "ar_hunspell",
-            "ar_folding"
+            "ar_hunspell"
+          ]
+      },
+	  "ara_tokenizer_test": {
+          "tokenizer": "whitespace",
+          "position_increment_gap": 512,
+          "char_filter": [
+            "to_spaces"
+          ],
+          "filter": [
+            "lowercase"
           ]
       },
       "en_hunspell": {
@@ -276,7 +295,7 @@
         },
         "ar_hunspell" : {
             "type": "hunspell",
-            "locale": "ahmed_dic_AR"
+            "locale": "thunderbird_AR"
         },
         "en_hunspell_filter" : {
             "type": "hunspell",
