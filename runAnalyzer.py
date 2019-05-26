@@ -201,5 +201,6 @@ __all__ = [
     'process_word_list_in_a_csv_file',
     'send_request_to_msarhan',
     'handle_msarhan_response',
-    'send_request_to_rosette'
+    'send_request_to_rosette',
+    'send_request_to_elasticsearch'
 ]

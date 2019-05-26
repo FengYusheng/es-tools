@@ -97,17 +97,20 @@ def generate_accuracy_csv(report_name, records):
 
         for token in records:
             if not len(token['terms']) \
-            == len(token['msarhan']) \
-            == len(token['rbl_ara']) \
-            == len(token['rbl_ara_folding']) \
-            == len(token['ar_std_lem_folding1']) \
-            == len(token['ar_std_lem_folding2']) \
             == len(token['ara_hunspell']):
+            # == len(token['msarhan']) \
+            # == len(token['rbl_ara']) \
+            # == len(token['rbl_ara_folding']) \
+            # == len(token['ar_std_lem_folding1']) \
+            # == len(token['ar_std_lem_folding2']) \
+
                 raise TypeError('Data format error about "{0}".'.format(token['token']))
 
-            token_, terms_, msarhan_, rbl_ara_, rbl_ara_folding_, ar_std_lem_folding1_, ar_std_lem_folding2_, ara_hunspell_ =  token['token'], token['terms'], token['msarhan'], token['rbl_ara'], token['rbl_ara_folding'], token['ar_std_lem_folding1'], token['ar_std_lem_folding2'], token['ara_hunspell']
+            # token_, terms_, msarhan_, rbl_ara_, rbl_ara_folding_, ar_std_lem_folding1_, ar_std_lem_folding2_, ara_hunspell_ =  token['token'], token['terms'], token['msarhan'], token['rbl_ara'], token['rbl_ara_folding'], token['ar_std_lem_folding1'], token['ar_std_lem_folding2'], token['ara_hunspell']
+            token_, terms_, ara_hunspell_ =  token['token'], token['terms'], token['ara_hunspell']
 
-            msarhan_count, rbl_ara_count, rbl_ara_folding_count, ar_std_lem_folding1_count, ar_std_lem_folding2_count, ara_hunspell_count = token['msarhan_count'], token['rbl_ara_count'], token['rbl_ara_folding_count'], token['ar_std_lem_folding1_count'], token['ar_std_lem_folding2_count'], token['ara_hunspell_count']
+            # msarhan_count, rbl_ara_count, rbl_ara_folding_count, ar_std_lem_folding1_count, ar_std_lem_folding2_count, ara_hunspell_count = token['msarhan_count'], token['rbl_ara_count'], token['rbl_ara_folding_count'], token['ar_std_lem_folding1_count'], token['ar_std_lem_folding2_count'], token['ara_hunspell_count']
+            ara_hunspell_count = token['ara_hunspell_count']
 
             ara_hunspell_count = calculate_hunspell_token_count(ara_hunspell_count)
 
@@ -116,16 +119,16 @@ def generate_accuracy_csv(report_name, records):
                 csv_writer.writerow({
                     'token' : token_,
                     'term' : terms_[i],
-                    'msarhan' : msarhan_[i],
-                    'msarhan_accuracy' : g_accuracy_format.format(msarhan_count[msarhan_[i]]*100/term_count),
-                    'rbl_ara' : rbl_ara_[i],
-                    'rbl_ara_accuracy' : g_accuracy_format.format(rbl_ara_count[rbl_ara_[i]]*100/term_count),
-                    'rbl_ara_folding' : rbl_ara_folding_[i],
-                    'rbl_ara_folding_accuracy' : g_accuracy_format.format(rbl_ara_folding_count[rbl_ara_folding_[i]]*100/term_count),
-                    'ar_std_lem_folding1' : ar_std_lem_folding1_[i],
-                    'ar_std_lem_folding1_accuracy' : g_accuracy_format.format(ar_std_lem_folding1_count[ar_std_lem_folding1_[i]]*100/term_count),
-                    'ar_std_lem_folding2' : ar_std_lem_folding2_[i],
-                    'ar_std_lem_folding2_accuracy' : g_accuracy_format.format(ar_std_lem_folding2_count[ar_std_lem_folding2_[i]]*100/term_count),
+                    # 'msarhan' : msarhan_[i],
+                    # 'msarhan_accuracy' : g_accuracy_format.format(msarhan_count[msarhan_[i]]*100/term_count),
+                    # 'rbl_ara' : rbl_ara_[i],
+                    # 'rbl_ara_accuracy' : g_accuracy_format.format(rbl_ara_count[rbl_ara_[i]]*100/term_count),
+                    # 'rbl_ara_folding' : rbl_ara_folding_[i],
+                    # 'rbl_ara_folding_accuracy' : g_accuracy_format.format(rbl_ara_folding_count[rbl_ara_folding_[i]]*100/term_count),
+                    # 'ar_std_lem_folding1' : ar_std_lem_folding1_[i],
+                    # 'ar_std_lem_folding1_accuracy' : g_accuracy_format.format(ar_std_lem_folding1_count[ar_std_lem_folding1_[i]]*100/term_count),
+                    # 'ar_std_lem_folding2' : ar_std_lem_folding2_[i],
+                    # 'ar_std_lem_folding2_accuracy' : g_accuracy_format.format(ar_std_lem_folding2_count[ar_std_lem_folding2_[i]]*100/term_count),
                     'ara_hunspell' : ara_hunspell_[i],
                     'ara_hunspell_accuracy' : g_accuracy_format.format(ara_hunspell_count[ara_hunspell_[i]]*100/term_count)
                 })
