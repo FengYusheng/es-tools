@@ -137,7 +137,7 @@ def send_request_to_msarhan(root, inflection):
 
 
 def send_request_to_elasticsearch(root, inflection, analyzer='ar_std_lem'):
-    options = optParser(['-p', '9200', '-s', 'localhost', '-i', 'arci-test', '-a', analyzer])
+    options = optParser(['-p', '9200', '-s', 'localhost', '-i', 'arci-custom-test', '-a', analyzer])
     request = build_request(options, text=inflection)
     response = send_request(request)
     return response

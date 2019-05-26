@@ -199,7 +199,18 @@
             "to_spaces"
           ],
           "filter": [
-            "icu_folding",
+            "icu_folding"
+          ]
+      },
+      "ar_std_folding_2": {
+          "tokenizer": "whitespace",
+          "position_increment_gap": 512,
+          "char_filter": [
+            "to_spaces"
+          ],
+          "filter": [
+            "icu_normalizer",
+            "ar_folding_2",
             "lowercase"
           ]
       },
@@ -224,8 +235,11 @@
             "to_spaces"
           ],
           "filter": [
+            "icu_normalizer",
+            "ar_folding_2",
             "lowercase",
-            "ar_hunspell"
+            "ar_hunspell",
+            "icu_normalizer"
           ]
       },
 	  "ara_tokenizer_test": {
@@ -247,6 +261,27 @@
           "filter": [
             "lowercase",
             "en_hunspell_filter"
+          ]
+      },
+      "nfc_normal": {
+          "tokenizer": "whitespace",
+          "position_increment_gap": 512,
+          "char_filter": [
+            "icu_nfc"
+          ]
+      },
+      "nfkc_normal": {
+          "tokenizer": "whitespace",
+          "position_increment_gap": 512,
+          "char_filter": [
+            "icu_nfkc"
+          ]
+      },
+      "nfkc_cf_normal": {
+          "tokenizer": "whitespace",
+          "position_increment_gap": 512,
+          "char_filter": [
+            "icu_nfkc_cf"
           ]
       }
       },
@@ -274,7 +309,19 @@
           "type": "pattern_replace",
           "pattern": "\\s+",
           "replacement": " "
-        }
+      },
+      "icu_nfc": {
+          "type": "icu_normalizer",
+          "name": "nfc"
+      },
+      "icu_nfkc": {
+          "type": "icu_normalizer",
+          "name": "nfkc"
+      },
+      "icu_nfkc_cf": {
+          "type": "icu_normalizer",
+          "name": "nfkc_cf"
+      }
       },
       "filter": {
         "arabic_stemmer": {
@@ -284,6 +331,10 @@
         "ar_folding": {
             "type": "icu_folding",
             "unicodeSetFilter": "[اَاٌاُاِاًاْاّأَأٌأٌأْأّإِآلآبَبٌبُبِبْبّتَتٌتُتِتْتّثَثٌثٌثِثْثّجَجٌجُجِجْجّحَحٌحُحِحْحّخَخٌخُخِخْخّدَدٌدِدْدّذَذٌذُذِذْذّرَرٌرُرِرْرّزَزٌزُزِزْزّسَسٌسُسِسْسّشَشٌشُشِشْشّصَصٌصُصِصْصّضَضٌضُضِضْضّطَطٌطُطِطْطّظَظٌظُظِظْظّعَعٌعُعِعْعّغَغٌغُغِغْغّفَفٌفُفِفْفّقَقٌقُقِقْقّكَكٌكٌكِكْكْلَلٌلُلِلْلّمَمٌمُمِمْمّنَنٌنُنِنْنّهَهٌهُهِهْهّوَوٌوُوِوْوّيَيٌيُيِيْيّ]"
+        },
+        "ar_folding_2":{
+            "type": "icu_folding",
+            "unicodeSetFilter": "[ًٌٍَُِّْ]"
         },
         "rbl_ara_filter" : {
             "type": "rbl",

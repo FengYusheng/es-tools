@@ -107,12 +107,12 @@ def derivation_for_inaccuracy():
 
 
 def run():
-    regular_verbs()
-    irregular_verbs()
+    # regular_verbs()
+    # irregular_verbs()
     nouns()
     numerals()
     derivation()
-    derivation_for_inaccuracy()
+    # derivation_for_inaccuracy()
 
 
 
