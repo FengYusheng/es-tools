@@ -25,7 +25,7 @@ def handle_msarhan_response(response, original, inflection, report_writer=None):
 
 def handle_response(analyzer, response):
     if 'tokens' in response:
-        tokens_ = [t['token'] for t in response['tokens'] if t['type'] == '<LEMMA>'] if 'rbl_ara' in analyzer else [t['token'] for t in response['tokens']]
+        tokens_ = [t['token'] for t in response['tokens']]
         return sorted(tokens_)
     else:
         print(response)

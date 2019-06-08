@@ -164,6 +164,16 @@
           "type": "rbl",
           "language" : "ara",
           "stopwords" : "_arabic_"
+      },
+      "rbl_ara_folding": {
+          "type": "custom",
+          "tokenizer": "rbl_ara_tokenizer",
+          "filter": [
+              "rbl_ara_filter",
+              "lowercase",
+              "rbl_ara_stopwords",
+              "arabic_folding"
+          ]
       }
       },
       "normalizer": {
@@ -188,6 +198,10 @@
             "letter",
             "digit"
           ]
+        },
+        "rbl_ara_tokenizer" : {
+            "type": "rbl",
+            "language" : "ara"
         }
       },
       "char_filter": {
@@ -205,6 +219,14 @@
         "arabic_stemmer": {
           "type":       "hunspell",
           "locale":   "mozilla_AR"
+        },
+        "rbl_ara_filter" : {
+            "type": "rbl",
+            "language": "ara"
+        },
+        "rbl_ara_stopwords" : {
+            "type": "stop",
+            "stopwords" : "_arabic_"
         },
         "russian_folding": {
           "type": "icu_folding",

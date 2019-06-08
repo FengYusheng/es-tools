@@ -225,7 +225,8 @@
           "filter": [
               "rbl_ara_filter",
               "lowercase",
-              "rbl_ara_stopwords"
+              "rbl_ara_stopwords",
+              "ar_folding_2"
           ]
       },
       "ara_hunspell": {
