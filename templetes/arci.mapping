@@ -163,7 +163,8 @@
       "rbl_ara": {
           "type": "rbl",
           "language" : "ara",
-          "stopwords" : "_arabic_"
+          "stopwords" : "_arabic_",
+          "query" : "True"
       },
       "rbl_ara_folding": {
           "type": "custom",
