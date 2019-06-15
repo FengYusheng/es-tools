@@ -223,7 +223,8 @@
         },
         "rbl_ara_filter" : {
             "type": "rbl",
-            "language": "ara"
+            "language": "ara",
+            "query": "True"
         },
         "rbl_ara_stopwords" : {
             "type": "stop",
